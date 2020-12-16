@@ -31,12 +31,12 @@
 #include <optix_stubs.h>
 
 #include <cuda/whitted.h>
-#include <sutil/Exception.h>
-#include <sutil/Matrix.h>
-#include <sutil/Quaternion.h>
-#include <sutil/Record.h>
-#include <sutil/Scene.h>
-#include <sutil/sutil.h>
+#include "Exception.h"
+#include "Matrix.h"
+#include "Quaternion.h"
+#include "Record.h"
+#include "Scene.h"
+#include "sutil.h"
 
 #define TINYGLTF_IMPLEMENTATION
 //#define STB_IMAGE_IMPLEMENTATION        // Implementation in sutil.cpp
@@ -55,7 +55,7 @@
 #include <iomanip>
 #include <iostream>
 
-namespace sutil
+namespace cubist
 {
 
 namespace

@@ -27,19 +27,19 @@
 //
 #pragma once
 
-#include <sutil/vec_math.h>
-#include <sutil/Matrix.h>
+#include "vec_math.h"
+#include "Matrix.h"
 
 
 #ifndef __CUDACC__
 #  include <assert.h>
-#  define SUTIL_AABB_ASSERT assert
+#  define CUBIST_AABB_ASSERT assert
 #else
-#  define SUTIL_AABB_ASSERT(x)
+#  define CUBIST_AABB_ASSERT(x)
 #endif
 
 
-namespace sutil
+namespace cubist
 {
 
  /**
@@ -67,104 +67,104 @@ namespace sutil
   public:
 
     /** Construct an invalid box */
-    SUTIL_HOSTDEVICE Aabb();
+    CUBIST_HOSTDEVICE Aabb();
 
     /** Construct from min and max vectors */
-    SUTIL_HOSTDEVICE Aabb( const float3& min, const float3& max );
+    CUBIST_HOSTDEVICE Aabb( const float3& min, const float3& max );
 
     /** Construct from three points (e.g. triangle) */
-    SUTIL_HOSTDEVICE Aabb( const float3& v0, const float3& v1, const float3& v2 );
+    CUBIST_HOSTDEVICE Aabb( const float3& v0, const float3& v1, const float3& v2 );
 
     /** Exact equality */
-    SUTIL_HOSTDEVICE bool operator==( const Aabb& other ) const;
+    CUBIST_HOSTDEVICE bool operator==( const Aabb& other ) const;
 
     /** Array access */
-    SUTIL_HOSTDEVICE float3& operator[]( int i );
+    CUBIST_HOSTDEVICE float3& operator[]( int i );
 
     /** Const array access */
-    SUTIL_HOSTDEVICE const float3& operator[]( int i ) const;
+    CUBIST_HOSTDEVICE const float3& operator[]( int i ) const;
 
     /** Set using two vectors */
-    SUTIL_HOSTDEVICE void set( const float3& min, const float3& max );
+    CUBIST_HOSTDEVICE void set( const float3& min, const float3& max );
 
     /** Set using three points (e.g. triangle) */
-    SUTIL_HOSTDEVICE void set( const float3& v0, const float3& v1, const float3& v2 );
+    CUBIST_HOSTDEVICE void set( const float3& v0, const float3& v1, const float3& v2 );
 
     /** Invalidate the box */
-    SUTIL_HOSTDEVICE void invalidate();
+    CUBIST_HOSTDEVICE void invalidate();
 
     /** Check if the box is valid */
-    SUTIL_HOSTDEVICE bool valid() const;
+    CUBIST_HOSTDEVICE bool valid() const;
 
     /** Check if the point is in the box */
-    SUTIL_HOSTDEVICE bool contains( const float3& p ) const;
+    CUBIST_HOSTDEVICE bool contains( const float3& p ) const;
 
     /** Check if the box is fully contained in the box */
-    SUTIL_HOSTDEVICE bool contains( const Aabb& bb ) const;
+    CUBIST_HOSTDEVICE bool contains( const Aabb& bb ) const;
 
     /** Extend the box to include the given point */
-    SUTIL_HOSTDEVICE void include( const float3& p );
+    CUBIST_HOSTDEVICE void include( const float3& p );
 
     /** Extend the box to include the given box */
-    SUTIL_HOSTDEVICE void include( const Aabb& other );
+    CUBIST_HOSTDEVICE void include( const Aabb& other );
 
     /** Extend the box to include the given box */
-    SUTIL_HOSTDEVICE void include( const float3& min, const float3& max );
+    CUBIST_HOSTDEVICE void include( const float3& min, const float3& max );
 
     /** Compute the box center */
-    SUTIL_HOSTDEVICE float3 center() const;
+    CUBIST_HOSTDEVICE float3 center() const;
 
     /** Compute the box center in the given dimension */
-    SUTIL_HOSTDEVICE float center( int dim ) const;
+    CUBIST_HOSTDEVICE float center( int dim ) const;
 
     /** Compute the box extent */
-    SUTIL_HOSTDEVICE float3 extent() const;
+    CUBIST_HOSTDEVICE float3 extent() const;
 
     /** Compute the box extent in the given dimension */
-    SUTIL_HOSTDEVICE float extent( int dim ) const;
+    CUBIST_HOSTDEVICE float extent( int dim ) const;
 
     /** Compute the volume of the box */
-    SUTIL_HOSTDEVICE float volume() const;
+    CUBIST_HOSTDEVICE float volume() const;
 
     /** Compute the surface area of the box */
-    SUTIL_HOSTDEVICE float area() const;
+    CUBIST_HOSTDEVICE float area() const;
 
     /** Compute half the surface area of the box */
-    SUTIL_HOSTDEVICE float halfArea() const;
+    CUBIST_HOSTDEVICE float halfArea() const;
 
     /** Get the index of the longest axis */
-    SUTIL_HOSTDEVICE int longestAxis() const;
+    CUBIST_HOSTDEVICE int longestAxis() const;
 
     /** Get the extent of the longest axis */
-    SUTIL_HOSTDEVICE float maxExtent() const;
+    CUBIST_HOSTDEVICE float maxExtent() const;
 
     /** Check for intersection with another box */
-    SUTIL_HOSTDEVICE bool intersects( const Aabb& other ) const;
+    CUBIST_HOSTDEVICE bool intersects( const Aabb& other ) const;
 
     /** Make the current box be the intersection between this one and another one */
-    SUTIL_HOSTDEVICE void intersection( const Aabb& other );
+    CUBIST_HOSTDEVICE void intersection( const Aabb& other );
 
     /** Enlarge the box by moving both min and max by 'amount' */
-    SUTIL_HOSTDEVICE void enlarge( float amount );
+    CUBIST_HOSTDEVICE void enlarge( float amount );
 
-    SUTIL_HOSTDEVICE void transform( const Matrix3x4& m );
-    SUTIL_HOSTDEVICE void transform( const Matrix4x4& m );
+    CUBIST_HOSTDEVICE void transform( const Matrix3x4& m );
+    CUBIST_HOSTDEVICE void transform( const Matrix4x4& m );
 
     /** Check if the box is flat in at least one dimension  */
-    SUTIL_HOSTDEVICE bool isFlat() const;
+    CUBIST_HOSTDEVICE bool isFlat() const;
 
     /** Compute the minimum Euclidean distance from a point on the
      surface of this Aabb to the point of interest */
-    SUTIL_HOSTDEVICE float distance( const float3& x ) const;
+    CUBIST_HOSTDEVICE float distance( const float3& x ) const;
 
     /** Compute the minimum squared Euclidean distance from a point on the
      surface of this Aabb to the point of interest */
-    SUTIL_HOSTDEVICE float distance2( const float3& x ) const;
+    CUBIST_HOSTDEVICE float distance2( const float3& x ) const;
 
     /** Compute the minimum Euclidean distance from a point on the surface
       of this Aabb to the point of interest.
       If the point of interest lies inside this Aabb, the result is negative  */
-    SUTIL_HOSTDEVICE float signedDistance( const float3& x ) const;
+    CUBIST_HOSTDEVICE float signedDistance( const float3& x ) const;
 
     /** Min bound */
     float3 m_min;
@@ -173,22 +173,22 @@ namespace sutil
   };
 
 
-  SUTIL_INLINE SUTIL_HOSTDEVICE Aabb::Aabb()
+  CUBIST_INLINE CUBIST_HOSTDEVICE Aabb::Aabb()
   {
     invalidate();
   }
 
-  SUTIL_INLINE SUTIL_HOSTDEVICE Aabb::Aabb( const float3& min, const float3& max )
+  CUBIST_INLINE CUBIST_HOSTDEVICE Aabb::Aabb( const float3& min, const float3& max )
   {
     set( min, max );
   }
 
-  SUTIL_INLINE SUTIL_HOSTDEVICE Aabb::Aabb( const float3& v0, const float3& v1, const float3& v2 )
+  CUBIST_INLINE CUBIST_HOSTDEVICE Aabb::Aabb( const float3& v0, const float3& v1, const float3& v2 )
   {
     set( v0, v1, v2 );
   }
 
-  SUTIL_INLINE SUTIL_HOSTDEVICE bool Aabb::operator==( const Aabb& other ) const
+  CUBIST_INLINE CUBIST_HOSTDEVICE bool Aabb::operator==( const Aabb& other ) const
   {
     return m_min.x == other.m_min.x &&
            m_min.y == other.m_min.y &&
@@ -198,120 +198,120 @@ namespace sutil
            m_max.z == other.m_max.z;
   }
 
-  SUTIL_INLINE SUTIL_HOSTDEVICE float3& Aabb::operator[]( int i )
+  CUBIST_INLINE CUBIST_HOSTDEVICE float3& Aabb::operator[]( int i )
   {
-    SUTIL_AABB_ASSERT( i>=0 && i<=1 );
+    CUBIST_AABB_ASSERT( i>=0 && i<=1 );
     return (&m_min)[i];
   }
 
-  SUTIL_INLINE SUTIL_HOSTDEVICE const float3& Aabb::operator[]( int i ) const
+  CUBIST_INLINE CUBIST_HOSTDEVICE const float3& Aabb::operator[]( int i ) const
   {
-    SUTIL_AABB_ASSERT( i>=0 && i<=1 );
+    CUBIST_AABB_ASSERT( i>=0 && i<=1 );
     return (&m_min)[i];
   }
 
-  SUTIL_INLINE SUTIL_HOSTDEVICE void Aabb::set( const float3& min, const float3& max )
+  CUBIST_INLINE CUBIST_HOSTDEVICE void Aabb::set( const float3& min, const float3& max )
   {
     m_min = min;
     m_max = max;
   }
 
-  SUTIL_INLINE SUTIL_HOSTDEVICE void Aabb::set( const float3& v0, const float3& v1, const float3& v2 )
+  CUBIST_INLINE CUBIST_HOSTDEVICE void Aabb::set( const float3& v0, const float3& v1, const float3& v2 )
   {
     m_min = fminf( v0, fminf(v1,v2) );
     m_max = fmaxf( v0, fmaxf(v1,v2) );
   }
 
-  SUTIL_INLINE SUTIL_HOSTDEVICE void Aabb::invalidate()
+  CUBIST_INLINE CUBIST_HOSTDEVICE void Aabb::invalidate()
   {
     m_min = make_float3(  1e37f );
     m_max = make_float3( -1e37f );
   }
 
-  SUTIL_INLINE SUTIL_HOSTDEVICE bool Aabb::valid() const
+  CUBIST_INLINE CUBIST_HOSTDEVICE bool Aabb::valid() const
   {
     return m_min.x <= m_max.x &&
       m_min.y <= m_max.y &&
       m_min.z <= m_max.z;
   }
 
-  SUTIL_INLINE SUTIL_HOSTDEVICE bool Aabb::contains( const float3& p ) const
+  CUBIST_INLINE CUBIST_HOSTDEVICE bool Aabb::contains( const float3& p ) const
   {
     return  p.x >= m_min.x && p.x <= m_max.x &&
             p.y >= m_min.y && p.y <= m_max.y &&
             p.z >= m_min.z && p.z <= m_max.z;
   }
 
-  SUTIL_INLINE SUTIL_HOSTDEVICE bool Aabb::contains( const Aabb& bb ) const
+  CUBIST_INLINE CUBIST_HOSTDEVICE bool Aabb::contains( const Aabb& bb ) const
   {
     return contains( bb.m_min ) && contains( bb.m_max );
   }
 
-  SUTIL_INLINE SUTIL_HOSTDEVICE void Aabb::include( const float3& p )
+  CUBIST_INLINE CUBIST_HOSTDEVICE void Aabb::include( const float3& p )
   {
     m_min = fminf( m_min, p );
     m_max = fmaxf( m_max, p );
   }
 
-  SUTIL_INLINE SUTIL_HOSTDEVICE void Aabb::include( const Aabb& other )
+  CUBIST_INLINE CUBIST_HOSTDEVICE void Aabb::include( const Aabb& other )
   {
     m_min = fminf( m_min, other.m_min );
     m_max = fmaxf( m_max, other.m_max );
   }
 
-  SUTIL_INLINE SUTIL_HOSTDEVICE void Aabb::include( const float3& min, const float3& max )
+  CUBIST_INLINE CUBIST_HOSTDEVICE void Aabb::include( const float3& min, const float3& max )
   {
     m_min = fminf( m_min, min );
     m_max = fmaxf( m_max, max );
   }
 
-  SUTIL_INLINE SUTIL_HOSTDEVICE float3 Aabb::center() const
+  CUBIST_INLINE CUBIST_HOSTDEVICE float3 Aabb::center() const
   {
-    SUTIL_AABB_ASSERT( valid() );
+    CUBIST_AABB_ASSERT( valid() );
     return (m_min+m_max) * 0.5f;
   }
 
-  SUTIL_INLINE SUTIL_HOSTDEVICE float Aabb::center( int dim ) const
+  CUBIST_INLINE CUBIST_HOSTDEVICE float Aabb::center( int dim ) const
   {
-    SUTIL_AABB_ASSERT( valid() );
-    SUTIL_AABB_ASSERT( dim>=0 && dim<=2 );
+    CUBIST_AABB_ASSERT( valid() );
+    CUBIST_AABB_ASSERT( dim>=0 && dim<=2 );
     return ( ((const float*)(&m_min))[dim] + ((const float*)(&m_max))[dim] ) * 0.5f;
   }
 
-  SUTIL_INLINE SUTIL_HOSTDEVICE float3 Aabb::extent() const
+  CUBIST_INLINE CUBIST_HOSTDEVICE float3 Aabb::extent() const
   {
-    SUTIL_AABB_ASSERT( valid() );
+    CUBIST_AABB_ASSERT( valid() );
     return m_max - m_min;
   }
 
-  SUTIL_INLINE SUTIL_HOSTDEVICE float Aabb::extent( int dim ) const
+  CUBIST_INLINE CUBIST_HOSTDEVICE float Aabb::extent( int dim ) const
   {
-    SUTIL_AABB_ASSERT( valid() );
+    CUBIST_AABB_ASSERT( valid() );
     return ((const float*)(&m_max))[dim] - ((const float*)(&m_min))[dim];
   }
 
-  SUTIL_INLINE SUTIL_HOSTDEVICE float Aabb::volume() const
+  CUBIST_INLINE CUBIST_HOSTDEVICE float Aabb::volume() const
   {
-    SUTIL_AABB_ASSERT( valid() );
+    CUBIST_AABB_ASSERT( valid() );
     const float3 d = extent();
     return d.x*d.y*d.z;
   }
 
-  SUTIL_INLINE SUTIL_HOSTDEVICE float Aabb::area() const
+  CUBIST_INLINE CUBIST_HOSTDEVICE float Aabb::area() const
   {
     return 2.0f * halfArea();
   }
 
-  SUTIL_INLINE SUTIL_HOSTDEVICE float Aabb::halfArea() const
+  CUBIST_INLINE CUBIST_HOSTDEVICE float Aabb::halfArea() const
   {
-    SUTIL_AABB_ASSERT( valid() );
+    CUBIST_AABB_ASSERT( valid() );
     const float3 d = extent();
     return d.x*d.y + d.y*d.z + d.z*d.x;
   }
 
-  SUTIL_INLINE SUTIL_HOSTDEVICE int Aabb::longestAxis() const
+  CUBIST_INLINE CUBIST_HOSTDEVICE int Aabb::longestAxis() const
   {
-    SUTIL_AABB_ASSERT( valid() );
+    CUBIST_AABB_ASSERT( valid() );
     const float3 d = extent();
 
     if( d.x > d.y )
@@ -319,12 +319,12 @@ namespace sutil
     return d.y > d.z ? 1 : 2;
   }
 
-  SUTIL_INLINE SUTIL_HOSTDEVICE float Aabb::maxExtent() const
+  CUBIST_INLINE CUBIST_HOSTDEVICE float Aabb::maxExtent() const
   {
     return extent( longestAxis() );
   }
 
-  SUTIL_INLINE SUTIL_HOSTDEVICE bool Aabb::intersects( const Aabb& other ) const
+  CUBIST_INLINE CUBIST_HOSTDEVICE bool Aabb::intersects( const Aabb& other ) const
   {
     if( other.m_min.x > m_max.x || other.m_max.x < m_min.x ) return false;
     if( other.m_min.y > m_max.y || other.m_max.y < m_min.y ) return false;
@@ -332,7 +332,7 @@ namespace sutil
     return true;
   }
 
-  SUTIL_INLINE SUTIL_HOSTDEVICE void Aabb::intersection( const Aabb& other )
+  CUBIST_INLINE CUBIST_HOSTDEVICE void Aabb::intersection( const Aabb& other )
   {
     m_min.x = fmaxf( m_min.x, other.m_min.x );
     m_min.y = fmaxf( m_min.y, other.m_min.y );
@@ -342,14 +342,14 @@ namespace sutil
     m_max.z = fminf( m_max.z, other.m_max.z );
   }
 
-  SUTIL_INLINE SUTIL_HOSTDEVICE void Aabb::enlarge( float amount )
+  CUBIST_INLINE CUBIST_HOSTDEVICE void Aabb::enlarge( float amount )
   {
-    SUTIL_AABB_ASSERT( valid() );
+    CUBIST_AABB_ASSERT( valid() );
     m_min -= make_float3( amount );
     m_max += make_float3( amount );
   }
 
-    SUTIL_INLINE SUTIL_HOSTDEVICE void Aabb::transform( const Matrix3x4& m )
+    CUBIST_INLINE CUBIST_HOSTDEVICE void Aabb::transform( const Matrix3x4& m )
   {
     // row-major matrix -> column vectors:
     // x ={ m[0], m[4], m[8] }
@@ -386,7 +386,7 @@ namespace sutil
     *this = result;
   }
 
-  SUTIL_INLINE SUTIL_HOSTDEVICE void Aabb::transform( const Matrix4x4& m )
+  CUBIST_INLINE CUBIST_HOSTDEVICE void Aabb::transform( const Matrix4x4& m )
   {
       const float3 b000 = m_min;
       const float3 b001 = make_float3( m_min.x, m_min.y, m_max.z );
@@ -408,19 +408,19 @@ namespace sutil
       include( make_float3( m*make_float4( b111, 1.0f ) ) );
   }
 
-  SUTIL_INLINE SUTIL_HOSTDEVICE bool Aabb::isFlat() const
+  CUBIST_INLINE CUBIST_HOSTDEVICE bool Aabb::isFlat() const
   {
     return m_min.x == m_max.x ||
            m_min.y == m_max.y ||
            m_min.z == m_max.z;
   }
 
-  SUTIL_INLINE SUTIL_HOSTDEVICE float Aabb::distance( const float3& x ) const
+  CUBIST_INLINE CUBIST_HOSTDEVICE float Aabb::distance( const float3& x ) const
   {
     return sqrtf(distance2(x));
   }
 
-  SUTIL_INLINE SUTIL_HOSTDEVICE float Aabb::signedDistance( const float3& x ) const
+  CUBIST_INLINE CUBIST_HOSTDEVICE float Aabb::signedDistance( const float3& x ) const
   {
     if( m_min.x <= x.x && x.x <= m_max.x &&
         m_min.y <= x.y && x.y <= m_max.y &&
@@ -436,7 +436,7 @@ namespace sutil
     return distance(x);
   }
 
-  SUTIL_INLINE SUTIL_HOSTDEVICE float Aabb::distance2( const float3& x ) const
+  CUBIST_INLINE CUBIST_HOSTDEVICE float Aabb::distance2( const float3& x ) const
   {
     float3 box_dims = m_max - m_min;
 
@@ -474,4 +474,4 @@ namespace sutil
     return dist2;
   }
 
-} // end namespace sutil
+} // end namespace CUBIST

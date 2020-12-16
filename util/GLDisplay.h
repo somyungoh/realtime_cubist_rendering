@@ -35,10 +35,10 @@
 #include <cstdint>
 #include <string>
 
-#include <sutil/sutil.h>
-#include <sutil/sutilapi.h>
+#include "sutil.h"
+#include "sutilapi.h"
 
-namespace sutil
+namespace cubist
 {
 
 class GLDisplay

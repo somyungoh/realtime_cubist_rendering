@@ -27,8 +27,8 @@
 //
 
 
-#include <Exception.h>
-#include <PPMLoader.h>
+#include "Exception.h"
+#include "PPMLoader.h"
 
 #include <algorithm>
 #include <cmath>

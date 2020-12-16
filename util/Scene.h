@@ -30,11 +30,11 @@
 
 #include <cuda/BufferView.h>
 #include <cuda/MaterialData.h>
-#include <sutil/Aabb.h>
-#include <sutil/Camera.h>
-#include <sutil/Matrix.h>
-#include <sutil/Preprocessor.h>
-#include <sutil/sutilapi.h>
+#include "Aabb.h"
+#include "Camera.h"
+#include "Matrix.h"
+#include "Preprocessor.h"
+#include "sutilapi.h"
 
 #include <cuda_runtime.h>
 
@@ -45,7 +45,7 @@
 #include <vector>
 
 
-namespace sutil
+namespace cubist
 {
 
 

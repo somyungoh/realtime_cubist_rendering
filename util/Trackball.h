@@ -30,7 +30,7 @@
 
 #include <sutil/sutilapi.h>
 
-namespace sutil
+namespace cubist
 {
 
 class Camera;

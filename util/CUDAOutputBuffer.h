@@ -29,7 +29,7 @@
 #pragma once
 
 #include <glad/glad.h> // Needs to be included before gl_interop
-#include <sutil/Exception.h>
+#include "Exception.h"
 
 #include <cuda_runtime.h>
 #include <cuda_gl_interop.h>
@@ -39,7 +39,7 @@
 
 #include "sutil.h"
 
-namespace sutil
+namespace cubist
 {
 
 enum class CUDAOutputBufferType
@@ -103,7 +103,7 @@ CUDAOutputBuffer<PIXEL_FORMAT>::CUDAOutputBuffer( CUDAOutputBufferType type, int
 #if 0
     if( width < 1 || height < 1 )
     {
-        throw sutil::Exception( "CUDAOutputBuffer dimensions must be at least 1 in both x and y." );
+        throw cubist::Exception( "CUDAOutputBuffer dimensions must be at least 1 in both x and y." );
     }
 #else
     ensureMinimumSize( width, height );
@@ -117,7 +117,7 @@ CUDAOutputBuffer<PIXEL_FORMAT>::CUDAOutputBuffer( CUDAOutputBufferType type, int
         CUDA_CHECK( cudaDeviceGetAttribute( &is_display_device, cudaDevAttrKernelExecTimeout, current_device ) );
         if( !is_display_device )
         {
-            throw sutil::Exception(
+            throw cubist::Exception(
                     "GL interop is only available on display device, please use display device for optimal "
                     "performance.  Alternatively you can disable GL interop with --no-gl-interop and run with "
                     "degraded performance."
@@ -370,4 +370,4 @@ PIXEL_FORMAT* CUDAOutputBuffer<PIXEL_FORMAT>::getHostPointer()
     }
 }
 
-} // end namespace sutil
+} // end namespace cubist

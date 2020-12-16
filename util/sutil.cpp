@@ -28,11 +28,11 @@
 
 
 #include <sampleConfig.h>
-#include <sutil/Exception.h>
-#include <sutil/GLDisplay.h>
-#include <sutil/PPMLoader.h>
-#include <sutil/sutil.h>
-#include <sutil/vec_math.h>
+#include "Exception.h"
+#include "GLDisplay.h"
+#include "PPMLoader.h"
+#include "sutil.h"
+#include "vec_math.h"
 
 #include <GLFW/glfw3.h>
 #include <glad/glad.h>
@@ -73,7 +73,7 @@
 #endif
 
 
-namespace sutil
+namespace cubist
 {
 
 static void errorCallback( int error, const char* description )

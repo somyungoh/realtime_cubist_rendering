@@ -26,12 +26,12 @@
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 //
 
-#include <sutil/Exception.h>
-#include <sutil/GLDisplay.h>
+#include "Exception.h"
+#include "GLDisplay.h"
 
 #include <iostream>
 
-namespace sutil
+namespace cubist 
 {
 
 //-----------------------------------------------------------------------------

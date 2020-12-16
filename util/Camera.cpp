@@ -27,9 +27,9 @@
 //
 
 
-#include <sutil/Camera.h>
+#include "Camera.h"
 
-namespace sutil {
+namespace cubist {
 
 void Camera::UVWFrame(float3& U, float3& V, float3& W) const
 {

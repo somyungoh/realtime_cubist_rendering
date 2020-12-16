@@ -28,7 +28,7 @@
 #include <optix.h>
 
 
-namespace sutil
+namespace cubist
 {
 
 template <typename T>

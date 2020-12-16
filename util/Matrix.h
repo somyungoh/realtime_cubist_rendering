@@ -29,9 +29,9 @@
 
 #pragma once
 
-#include <sutil/sutilapi.h>
-#include <sutil/Preprocessor.h>
-#include <sutil/vec_math.h>
+#include "sutilapi.h"
+#include "Preprocessor.h"
+#include "vec_math.h"
 
 #if !defined(__CUDACC_RTC__)
 #include <cmath>
@@ -41,7 +41,7 @@
 #define RT_MATRIX_ACCESS(m,i,j) m[i*N+j]
 #define RT_MAT_DECL template <unsigned int M, unsigned int N>
 
-namespace sutil
+namespace cubist
 {
 
   template <int DIM> struct VectorDim { };

@@ -26,13 +26,13 @@
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 //
 
-#include <sutil/Camera.h>
-#include <sutil/Trackball.h>
-#include <sutil/vec_math.h>
+#include "Camera.h"
+#include "Trackball.h"
+#include "vec_math.h"
 #include <cmath>
 #include <algorithm>
 
-namespace sutil
+namespace cubist
 {
 
 namespace
