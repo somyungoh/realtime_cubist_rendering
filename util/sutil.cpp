@@ -175,7 +175,7 @@ std::string getSampleDir()
             return directory;
     }
 
-    throw Exception( "sutil::getSampleDir couldn't locate an existing sample directory" );
+    throw Exception( "cubist::getSampleDir couldn't locate an existing sample directory" );
 }
 
 const char* sampleFilePath( const char* relativeSubDir, const char* relativePath )
@@ -202,7 +202,7 @@ const char* sampleFilePath( const char* relativeSubDir, const char* relativePath
             }
         }
     }
-    throw Exception( ( std::string{ "sutil::sampleDataFilePath couldn't locate " } +relativePath ).c_str() );
+    throw Exception( ( std::string{ "cubist::sampleDataFilePath couldn't locate " } +relativePath ).c_str() );
 }
 
 const char* sampleDataFilePath( const char* relativePath )
@@ -221,7 +221,7 @@ size_t pixelFormatSize( BufferImageFormat format )
         case BufferImageFormat::FLOAT4:
             return sizeof( float ) * 4;
         default:
-            throw Exception( "sutil::pixelFormatSize: Unrecognized buffer format" );
+            throw Exception( "cubist::pixelFormatSize: Unrecognized buffer format" );
     }
 }
 
@@ -253,12 +253,12 @@ ImageBuffer loadImage( const char* fname, int32_t force_components )
 {
     const std::string filename( fname );
     if( filename.length() < 5 )
-        throw Exception( "sutil::loadImage(): Failed to determine filename extension" );
+        throw Exception( "cubist::loadImage(): Failed to determine filename extension" );
 
     if( force_components >  4 ||
         force_components == 2 ||
         force_components == 1 )
-        throw Exception( "sutil::loadImage(): Invalid force_components value" );
+        throw Exception( "cubist::loadImage(): Invalid force_components value" );
 
     ImageBuffer image;
 
@@ -266,7 +266,7 @@ ImageBuffer loadImage( const char* fname, int32_t force_components )
     if( ext == "PPM" || ext == "ppm" )
     {
         if( force_components != 4 && force_components != 0 )
-            throw Exception( "sutil::loadImage(): PPM loading with force_components not implemented" );
+            throw Exception( "cubist::loadImage(): PPM loading with force_components not implemented" );
 
         PPMLoader loader( filename );
         image.width  = loader.width();
@@ -285,12 +285,12 @@ ImageBuffer loadImage( const char* fname, int32_t force_components )
     else if( ext == "png" || ext == "PNG" )
     {
         if( force_components != 4 && force_components != 0 )
-            throw Exception( "sutil::loadImage(): PNG loading with force_components not implemented" );
+            throw Exception( "cubist::loadImage(): PNG loading with force_components not implemented" );
 
         int32_t w, h, channels;
         uint8_t* data = stbi_load( filename.c_str(), &w, &h, &channels, STBI_rgb_alpha );
         if( !data )
-            throw sutil::Exception( "sutil::loadImage( png ): stbi_load failed" );
+            throw cubist::Exception( "cubist::loadImage( png ): stbi_load failed" );
 
         image.width  = w;
         image.height = w;
@@ -303,7 +303,7 @@ ImageBuffer loadImage( const char* fname, int32_t force_components )
     else if( ext == "exr" || ext == "EXR" )
     {
         if( force_components != 4 && force_components != 0 && force_components != 3 )
-            throw Exception( "sutil::loadImage(): PNG loading with force_components not implemented" );
+            throw Exception( "cubist::loadImage(): PNG loading with force_components not implemented" );
 
         const char*  err  = nullptr;
         float*       data = nullptr;
@@ -314,13 +314,13 @@ ImageBuffer loadImage( const char* fname, int32_t force_components )
         {
             if (err)
             {
-                sutil::Exception e( ( std::string( "sutil::loadImage( exr ): " ) + err ).c_str() );
+                cubist::Exception e( ( std::string( "cubist::loadImage( exr ): " ) + err ).c_str() );
                 FreeEXRErrorMessage( err );
                 throw e;
             }
             else
             {
-                throw sutil::Exception( "sutil::loadImage( exr ): failed to load image" );
+                throw cubist::Exception( "cubist::loadImage( exr ): failed to load image" );
             }
         }
 
@@ -348,7 +348,7 @@ ImageBuffer loadImage( const char* fname, int32_t force_components )
     }
     else
     {
-        throw Exception( ( "sutil::loadImage(): Failed unsupported filetype '" + ext + "'" ).c_str() );
+        throw Exception( ( "cubist::loadImage(): Failed unsupported filetype '" + ext + "'" ).c_str() );
     }
 
     return image;
@@ -520,7 +520,7 @@ void saveImage( const char* fname, const ImageBuffer& image, bool disable_srgb_c
 {
     const std::string filename( fname );
     if( filename.length() < 5 )
-        throw Exception( "sutil::saveImage(): Failed to determine filename extension" );
+        throw Exception( "cubist::saveImage(): Failed to determine filename extension" );
 
     const std::string ext = filename.substr( filename.length()-3 );
     if( ext == "PPM" || ext == "ppm" )
@@ -589,7 +589,7 @@ void saveImage( const char* fname, const ImageBuffer& image, bool disable_srgb_c
 
             default:
             {
-                throw Exception( "sutil::saveImage(): Unrecognized image buffer pixel format.\n" );
+                throw Exception( "cubist::saveImage(): Unrecognized image buffer pixel format.\n" );
             }
         }
 
@@ -611,22 +611,22 @@ void saveImage( const char* fname, const ImageBuffer& image, bool disable_srgb_c
                             image.data,
                             image.width*sizeof( uchar4 ) //stride_in_bytes
                             ) )
-                    throw Exception( "sutil::saveImage(): stbi_write_png failed" );
+                    throw Exception( "cubist::saveImage(): stbi_write_png failed" );
             } break;
 
             case BufferImageFormat::FLOAT3:
             {
-                throw Exception( "sutil::saveImage(): saving of float3 images to PNG not implemented yet" );
+                throw Exception( "cubist::saveImage(): saving of float3 images to PNG not implemented yet" );
             }
 
             case BufferImageFormat::FLOAT4:
             {
-                throw Exception( "sutil::saveImage(): saving of float4 images to PNG not implemented yet" );
+                throw Exception( "cubist::saveImage(): saving of float4 images to PNG not implemented yet" );
             }
 
             default:
             {
-                throw Exception( "sutil::saveImage: Unrecognized image buffer pixel format.\n" );
+                throw Exception( "cubist::saveImage: Unrecognized image buffer pixel format.\n" );
             }
         }
     }
@@ -637,7 +637,7 @@ void saveImage( const char* fname, const ImageBuffer& image, bool disable_srgb_c
         {
             case BufferImageFormat::UNSIGNED_BYTE4:
             {
-                throw Exception( "sutil::saveImage(): saving of uchar4 images to EXR not implemented yet" );
+                throw Exception( "cubist::saveImage(): saving of uchar4 images to EXR not implemented yet" );
             }
 
             case BufferImageFormat::FLOAT3:
@@ -653,7 +653,7 @@ void saveImage( const char* fname, const ImageBuffer& image, bool disable_srgb_c
                         &err );
 
                 if( ret != TINYEXR_SUCCESS )
-                    throw Exception( ( "sutil::saveImage( exr ) error: " + std::string( err ) ).c_str() );
+                    throw Exception( ( "cubist::saveImage( exr ) error: " + std::string( err ) ).c_str() );
 
             } break;
 
@@ -670,18 +670,18 @@ void saveImage( const char* fname, const ImageBuffer& image, bool disable_srgb_c
                         &err );
 
                 if( ret != TINYEXR_SUCCESS )
-                    throw Exception( ( "sutil::saveImage( exr ) error: " + std::string( err ) ).c_str() );
+                    throw Exception( ( "cubist::saveImage( exr ) error: " + std::string( err ) ).c_str() );
             } break;
 
             default:
             {
-                throw Exception( "sutil::saveImage: Unrecognized image buffer pixel format.\n" );
+                throw Exception( "cubist::saveImage: Unrecognized image buffer pixel format.\n" );
             }
         }
     }
     else
     {
-        throw Exception( ( "sutil::saveImage(): Failed unsupported filetype '" + ext + "'" ).c_str() );
+        throw Exception( ( "cubist::saveImage(): Failed unsupported filetype '" + ext + "'" ).c_str() );
     }
 }
 
@@ -950,7 +950,7 @@ static std::string samplePTXFilePath( const char* sampleName, const char* fileNa
         }
     }
 
-    std::string error = "sutil::samplePTXFilePath couldn't locate ";
+    std::string error = "cubist::samplePTXFilePath couldn't locate ";
     error += fileName;
     error += " for sample ";
     error += sampleName;
@@ -1039,4 +1039,4 @@ void reportErrorMessage( const char* message )
 #endif
 }
 
-} // namespace sutil
+} // namespace cubist

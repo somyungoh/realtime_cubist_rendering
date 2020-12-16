@@ -34,20 +34,20 @@
 class StaticWorkDistribution
 {
 public:
-    SUTIL_INLINE SUTIL_HOSTDEVICE void setRasterSize( int width, int height )
+    CUBIST_INLINE CUBIST_HOSTDEVICE void setRasterSize( int width, int height )
     {
         m_width = width;
         m_height = height;
     }
 
 
-    SUTIL_INLINE SUTIL_HOSTDEVICE void setNumGPUs( int32_t num_gpus )
+    CUBIST_INLINE CUBIST_HOSTDEVICE void setNumGPUs( int32_t num_gpus )
     {
         m_num_gpus = num_gpus;
     }
 
 
-    SUTIL_INLINE SUTIL_HOSTDEVICE int32_t numSamples( int32_t gpu_idx )
+    CUBIST_INLINE CUBIST_HOSTDEVICE int32_t numSamples( int32_t gpu_idx )
     {
         const int tile_strip_width  = TILE_WIDTH*m_num_gpus;
         const int tile_strip_height = TILE_HEIGHT;
@@ -57,7 +57,7 @@ public:
     }
 
 
-    SUTIL_INLINE SUTIL_HOSTDEVICE int2 getSamplePixel( int32_t gpu_idx, int32_t sample_idx )
+    CUBIST_INLINE CUBIST_HOSTDEVICE int2 getSamplePixel( int32_t gpu_idx, int32_t sample_idx )
     {
         const int tile_strip_width  = TILE_WIDTH*m_num_gpus;
         const int tile_strip_height = TILE_HEIGHT;

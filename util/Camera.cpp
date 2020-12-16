@@ -44,4 +44,4 @@ void Camera::UVWFrame(float3& U, float3& V, float3& W) const
     U *= ulen;
 }
 
-} // namespace sutil
+} // namespace cubist

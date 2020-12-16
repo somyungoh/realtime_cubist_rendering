@@ -52,32 +52,32 @@ namespace cubist
 
   template <unsigned int M, unsigned int N> class Matrix;
 
-   template <unsigned int M> SUTIL_INLINE SUTIL_HOSTDEVICE Matrix<M,M>& operator*=(Matrix<M,M>& m1, const Matrix<M,M>& m2);
-   RT_MAT_DECL SUTIL_INLINE SUTIL_HOSTDEVICE bool         operator==(const Matrix<M,N>& m1, const Matrix<M,N>& m2);
-   RT_MAT_DECL SUTIL_INLINE SUTIL_HOSTDEVICE bool         operator!=(const Matrix<M,N>& m1, const Matrix<M,N>& m2);
-   RT_MAT_DECL SUTIL_INLINE SUTIL_HOSTDEVICE Matrix<M,N>& operator-=(Matrix<M,N>& m1, const Matrix<M,N>& m2);
-   RT_MAT_DECL SUTIL_INLINE SUTIL_HOSTDEVICE Matrix<M,N>& operator+=(Matrix<M,N>& m1, const Matrix<M,N>& m2);
-   RT_MAT_DECL SUTIL_INLINE SUTIL_HOSTDEVICE Matrix<M,N>& operator*=(Matrix<M,N>& m1, float f);
-   RT_MAT_DECL SUTIL_INLINE SUTIL_HOSTDEVICE Matrix<M,N>&operator/=(Matrix<M,N>& m1, float f);
-   RT_MAT_DECL SUTIL_INLINE SUTIL_HOSTDEVICE Matrix<M,N> operator-(const Matrix<M,N>& m1, const Matrix<M,N>& m2);
-   RT_MAT_DECL SUTIL_INLINE SUTIL_HOSTDEVICE Matrix<M,N> operator+(const Matrix<M,N>& m1, const Matrix<M,N>& m2);
-   RT_MAT_DECL SUTIL_INLINE SUTIL_HOSTDEVICE Matrix<M,N> operator/(const Matrix<M,N>& m, float f);
-   RT_MAT_DECL SUTIL_INLINE SUTIL_HOSTDEVICE Matrix<M,N> operator*(const Matrix<M,N>& m, float f);
-   RT_MAT_DECL SUTIL_INLINE SUTIL_HOSTDEVICE Matrix<M,N> operator*(float f, const Matrix<M,N>& m);
-   RT_MAT_DECL SUTIL_INLINE SUTIL_HOSTDEVICE typename Matrix<M,N>::floatM operator*(const Matrix<M,N>& m, const typename Matrix<M,N>::floatN& v );
-   RT_MAT_DECL SUTIL_INLINE SUTIL_HOSTDEVICE typename Matrix<M,N>::floatN operator*(const typename Matrix<M,N>::floatM& v, const Matrix<M,N>& m);
-   template<unsigned int M, unsigned int N, unsigned int R> SUTIL_INLINE SUTIL_HOSTDEVICE Matrix<M,R> operator*(const Matrix<M,N>& m1, const Matrix<N,R>& m2);
+   template <unsigned int M> CUBIST_INLINE CUBIST_HOSTDEVICE Matrix<M,M>& operator*=(Matrix<M,M>& m1, const Matrix<M,M>& m2);
+   RT_MAT_DECL CUBIST_INLINE CUBIST_HOSTDEVICE bool         operator==(const Matrix<M,N>& m1, const Matrix<M,N>& m2);
+   RT_MAT_DECL CUBIST_INLINE CUBIST_HOSTDEVICE bool         operator!=(const Matrix<M,N>& m1, const Matrix<M,N>& m2);
+   RT_MAT_DECL CUBIST_INLINE CUBIST_HOSTDEVICE Matrix<M,N>& operator-=(Matrix<M,N>& m1, const Matrix<M,N>& m2);
+   RT_MAT_DECL CUBIST_INLINE CUBIST_HOSTDEVICE Matrix<M,N>& operator+=(Matrix<M,N>& m1, const Matrix<M,N>& m2);
+   RT_MAT_DECL CUBIST_INLINE CUBIST_HOSTDEVICE Matrix<M,N>& operator*=(Matrix<M,N>& m1, float f);
+   RT_MAT_DECL CUBIST_INLINE CUBIST_HOSTDEVICE Matrix<M,N>&operator/=(Matrix<M,N>& m1, float f);
+   RT_MAT_DECL CUBIST_INLINE CUBIST_HOSTDEVICE Matrix<M,N> operator-(const Matrix<M,N>& m1, const Matrix<M,N>& m2);
+   RT_MAT_DECL CUBIST_INLINE CUBIST_HOSTDEVICE Matrix<M,N> operator+(const Matrix<M,N>& m1, const Matrix<M,N>& m2);
+   RT_MAT_DECL CUBIST_INLINE CUBIST_HOSTDEVICE Matrix<M,N> operator/(const Matrix<M,N>& m, float f);
+   RT_MAT_DECL CUBIST_INLINE CUBIST_HOSTDEVICE Matrix<M,N> operator*(const Matrix<M,N>& m, float f);
+   RT_MAT_DECL CUBIST_INLINE CUBIST_HOSTDEVICE Matrix<M,N> operator*(float f, const Matrix<M,N>& m);
+   RT_MAT_DECL CUBIST_INLINE CUBIST_HOSTDEVICE typename Matrix<M,N>::floatM operator*(const Matrix<M,N>& m, const typename Matrix<M,N>::floatN& v );
+   RT_MAT_DECL CUBIST_INLINE CUBIST_HOSTDEVICE typename Matrix<M,N>::floatN operator*(const typename Matrix<M,N>::floatM& v, const Matrix<M,N>& m);
+   template<unsigned int M, unsigned int N, unsigned int R> CUBIST_INLINE CUBIST_HOSTDEVICE Matrix<M,R> operator*(const Matrix<M,N>& m1, const Matrix<N,R>& m2);
 
 
   // Partial specializations to make matrix vector multiplication more efficient
   template <unsigned int N>
-  SUTIL_INLINE SUTIL_HOSTDEVICE float2 operator*(const Matrix<2,N>& m, const typename Matrix<2,N>::floatN& vec );
+  CUBIST_INLINE CUBIST_HOSTDEVICE float2 operator*(const Matrix<2,N>& m, const typename Matrix<2,N>::floatN& vec );
   template <unsigned int N>
-  SUTIL_INLINE SUTIL_HOSTDEVICE float3 operator*(const Matrix<3,N>& m, const typename Matrix<3,N>::floatN& vec );
-  SUTIL_INLINE SUTIL_HOSTDEVICE float3 operator*(const Matrix<3,4>& m, const float4& vec );
+  CUBIST_INLINE CUBIST_HOSTDEVICE float3 operator*(const Matrix<3,N>& m, const typename Matrix<3,N>::floatN& vec );
+  CUBIST_INLINE CUBIST_HOSTDEVICE float3 operator*(const Matrix<3,4>& m, const float4& vec );
   template <unsigned int N>
-  SUTIL_INLINE SUTIL_HOSTDEVICE float4 operator*(const Matrix<4,N>& m, const typename Matrix<4,N>::floatN& vec );
-  SUTIL_INLINE SUTIL_HOSTDEVICE float4 operator*(const Matrix<4,4>& m, const float4& vec );
+  CUBIST_INLINE CUBIST_HOSTDEVICE float4 operator*(const Matrix<4,N>& m, const typename Matrix<4,N>::floatN& vec );
+  CUBIST_INLINE CUBIST_HOSTDEVICE float4 operator*(const Matrix<4,4>& m, const float4& vec );
 
   /**
   * @brief A matrix with M rows and N columns
@@ -107,70 +107,70 @@ namespace cubist
     typedef typename VectorDim<M>::VectorType  floatM; /// A column of the matrix
 
     /** Create an uninitialized matrix */
-    SUTIL_HOSTDEVICE              Matrix();
+    CUBIST_HOSTDEVICE              Matrix();
 
     /** Create a matrix from the specified float array */
-    SUTIL_HOSTDEVICE explicit     Matrix( const float data[M*N] ) { for(unsigned int i = 0; i < M*N; ++i) m_data[i] = data[i]; }
+    CUBIST_HOSTDEVICE explicit     Matrix( const float data[M*N] ) { for(unsigned int i = 0; i < M*N; ++i) m_data[i] = data[i]; }
 
     /** Copy the matrix */
-    SUTIL_HOSTDEVICE              Matrix( const Matrix& m );
+    CUBIST_HOSTDEVICE              Matrix( const Matrix& m );
 
-    SUTIL_HOSTDEVICE              Matrix( const std::initializer_list<float>& list );
+    CUBIST_HOSTDEVICE              Matrix( const std::initializer_list<float>& list );
 
     /** Assignment operator */
-    SUTIL_HOSTDEVICE Matrix&      operator=( const Matrix& b );
+    CUBIST_HOSTDEVICE Matrix&      operator=( const Matrix& b );
 
     /** Access the specified element 0..N*M-1  */
-    SUTIL_HOSTDEVICE float        operator[]( unsigned int i )const { return m_data[i]; }
+    CUBIST_HOSTDEVICE float        operator[]( unsigned int i )const { return m_data[i]; }
 
     /** Access the specified element 0..N*M-1  */
-    SUTIL_HOSTDEVICE float&       operator[]( unsigned int i )      { return m_data[i]; }
+    CUBIST_HOSTDEVICE float&       operator[]( unsigned int i )      { return m_data[i]; }
 
     /** Access the specified row 0..M.  Returns float, float2, float3 or float4 depending on the matrix size  */
-    SUTIL_HOSTDEVICE floatN       getRow( unsigned int m )const;
+    CUBIST_HOSTDEVICE floatN       getRow( unsigned int m )const;
 
     /** Access the specified column 0..N.  Returns float, float2, float3 or float4 depending on the matrix size */
-    SUTIL_HOSTDEVICE floatM       getCol( unsigned int n )const;
+    CUBIST_HOSTDEVICE floatM       getCol( unsigned int n )const;
 
     /** Returns a pointer to the internal data array.  The data array is stored in row-major order. */
-    SUTIL_HOSTDEVICE float*       getData();
+    CUBIST_HOSTDEVICE float*       getData();
 
     /** Returns a const pointer to the internal data array.  The data array is stored in row-major order. */
-    SUTIL_HOSTDEVICE const float* getData()const;
+    CUBIST_HOSTDEVICE const float* getData()const;
 
     /** Assign the specified row 0..M.  Takes a float, float2, float3 or float4 depending on the matrix size */
-    SUTIL_HOSTDEVICE void         setRow( unsigned int m, const floatN &r );
+    CUBIST_HOSTDEVICE void         setRow( unsigned int m, const floatN &r );
 
     /** Assign the specified column 0..N.  Takes a float, float2, float3 or float4 depending on the matrix size */
-    SUTIL_HOSTDEVICE void         setCol( unsigned int n, const floatM &c );
+    CUBIST_HOSTDEVICE void         setCol( unsigned int n, const floatM &c );
 
     /** Returns the transpose of the matrix */
-    SUTIL_HOSTDEVICE Matrix<N,M>         transpose() const;
+    CUBIST_HOSTDEVICE Matrix<N,M>         transpose() const;
 
     /** Returns the inverse of the matrix */
-    SUTIL_HOSTDEVICE Matrix<4,4>         inverse() const;
+    CUBIST_HOSTDEVICE Matrix<4,4>         inverse() const;
 
     /** Returns the determinant of the matrix */
-    SUTIL_HOSTDEVICE float               det() const;
+    CUBIST_HOSTDEVICE float               det() const;
 
     /** Returns a rotation matrix */
-    SUTIL_HOSTDEVICE static Matrix<4,4>  rotate(const float radians, const float3& axis);
+    CUBIST_HOSTDEVICE static Matrix<4,4>  rotate(const float radians, const float3& axis);
 
     /** Returns a translation matrix */
-    SUTIL_HOSTDEVICE static Matrix<4,4>  translate(const float3& vec);
+    CUBIST_HOSTDEVICE static Matrix<4,4>  translate(const float3& vec);
 
     /** Returns a scale matrix */
-    SUTIL_HOSTDEVICE static Matrix<4,4>  scale(const float3& vec);
+    CUBIST_HOSTDEVICE static Matrix<4,4>  scale(const float3& vec);
 
     /** Creates a matrix from an ONB and center point */
-    SUTIL_HOSTDEVICE static Matrix<4,4>  fromBasis( const float3& u, const float3& v, const float3& w, const float3& c );
+    CUBIST_HOSTDEVICE static Matrix<4,4>  fromBasis( const float3& u, const float3& v, const float3& w, const float3& c );
 
     /** Returns the identity matrix */
-    SUTIL_HOSTDEVICE static Matrix<3,4>  affineIdentity();
-    SUTIL_HOSTDEVICE static Matrix<N,N>  identity();
+    CUBIST_HOSTDEVICE static Matrix<3,4>  affineIdentity();
+    CUBIST_HOSTDEVICE static Matrix<N,N>  identity();
 
     /** Ordered comparison operator so that the matrix can be used in an STL container */
-    SUTIL_HOSTDEVICE bool         operator<( const Matrix<M, N>& rhs ) const;
+    CUBIST_HOSTDEVICE bool         operator<( const Matrix<M, N>& rhs ) const;
 
 
   private:
@@ -180,13 +180,13 @@ namespace cubist
 
 
   template<unsigned int M, unsigned int N>
-  SUTIL_INLINE SUTIL_HOSTDEVICE Matrix<M,N>::Matrix()
+  CUBIST_INLINE CUBIST_HOSTDEVICE Matrix<M,N>::Matrix()
   {
   }
 
 
   template<unsigned int M, unsigned int N>
-  SUTIL_INLINE SUTIL_HOSTDEVICE Matrix<M,N>::Matrix( const Matrix<M,N>& m )
+  CUBIST_INLINE CUBIST_HOSTDEVICE Matrix<M,N>::Matrix( const Matrix<M,N>& m )
   {
     for(unsigned int i = 0; i < M*N; ++i)
       m_data[i] = m[i];
@@ -194,7 +194,7 @@ namespace cubist
 
 
   template<unsigned int M, unsigned int N>
-  SUTIL_INLINE SUTIL_HOSTDEVICE Matrix<M,N>::Matrix( const std::initializer_list<float>& list )
+  CUBIST_INLINE CUBIST_HOSTDEVICE Matrix<M,N>::Matrix( const std::initializer_list<float>& list )
   {
       int i = 0;
       for( auto it = list.begin(); it != list.end(); ++it )
@@ -203,7 +203,7 @@ namespace cubist
 
 
   template<unsigned int M, unsigned int N>
-  SUTIL_INLINE SUTIL_HOSTDEVICE Matrix<M,N>&  Matrix<M,N>::operator=( const Matrix& b )
+  CUBIST_INLINE CUBIST_HOSTDEVICE Matrix<M,N>&  Matrix<M,N>::operator=( const Matrix& b )
   {
     for(unsigned int i = 0; i < M*N; ++i)
       m_data[i] = b[i];
@@ -213,21 +213,21 @@ namespace cubist
 
   /*
   template<unsigned int M, unsigned int N>
-  SUTIL_INLINE SUTIL_HOSTDEVICE float Matrix<M,N>::operator[]( unsigned int i )const
+  CUBIST_INLINE CUBIST_HOSTDEVICE float Matrix<M,N>::operator[]( unsigned int i )const
   {
   return m_data[i];
   }
 
 
   template<unsigned int M, unsigned int N>
-  SUTIL_INLINE SUTIL_HOSTDEVICE float& Matrix<M,N>::operator[]( unsigned int i )
+  CUBIST_INLINE CUBIST_HOSTDEVICE float& Matrix<M,N>::operator[]( unsigned int i )
   {
   return m_data[i];
   }
   */
 
   template<unsigned int M, unsigned int N>
-  SUTIL_INLINE SUTIL_HOSTDEVICE typename Matrix<M,N>::floatN Matrix<M,N>::getRow( unsigned int m )const
+  CUBIST_INLINE CUBIST_HOSTDEVICE typename Matrix<M,N>::floatN Matrix<M,N>::getRow( unsigned int m )const
   {
     typename Matrix<M,N>::floatN temp;
     float* v = reinterpret_cast<float*>( &temp );
@@ -240,7 +240,7 @@ namespace cubist
 
 
   template<unsigned int M, unsigned int N>
-  SUTIL_INLINE SUTIL_HOSTDEVICE typename Matrix<M,N>::floatM Matrix<M,N>::getCol( unsigned int n )const
+  CUBIST_INLINE CUBIST_HOSTDEVICE typename Matrix<M,N>::floatM Matrix<M,N>::getCol( unsigned int n )const
   {
     typename Matrix<M,N>::floatM temp;
     float* v = reinterpret_cast<float*>( &temp );
@@ -252,21 +252,21 @@ namespace cubist
 
 
   template<unsigned int M, unsigned int N>
-  SUTIL_INLINE SUTIL_HOSTDEVICE float* Matrix<M,N>::getData()
+  CUBIST_INLINE CUBIST_HOSTDEVICE float* Matrix<M,N>::getData()
   {
     return m_data;
   }
 
 
   template<unsigned int M, unsigned int N>
-  SUTIL_INLINE SUTIL_HOSTDEVICE const float* Matrix<M,N>::getData() const
+  CUBIST_INLINE CUBIST_HOSTDEVICE const float* Matrix<M,N>::getData() const
   {
     return m_data;
   }
 
 
   template<unsigned int M, unsigned int N>
-  SUTIL_INLINE SUTIL_HOSTDEVICE void Matrix<M,N>::setRow( unsigned int m, const typename Matrix<M,N>::floatN &r )
+  CUBIST_INLINE CUBIST_HOSTDEVICE void Matrix<M,N>::setRow( unsigned int m, const typename Matrix<M,N>::floatN &r )
   {
     const float* v = reinterpret_cast<const float*>( &r );
     float* row = &( m_data[m*N] );
@@ -276,7 +276,7 @@ namespace cubist
 
 
   template<unsigned int M, unsigned int N>
-  SUTIL_INLINE SUTIL_HOSTDEVICE void Matrix<M,N>::setCol( unsigned int n, const typename Matrix<M,N>::floatM &c )
+  CUBIST_INLINE CUBIST_HOSTDEVICE void Matrix<M,N>::setCol( unsigned int n, const typename Matrix<M,N>::floatM &c )
   {
     const float* v = reinterpret_cast<const float*>( &c );
     for ( unsigned int i = 0; i < M; ++i )
@@ -286,7 +286,7 @@ namespace cubist
 
   // Compare two matrices using exact float comparison
   template<unsigned int M, unsigned int N>
-  SUTIL_HOSTDEVICE bool operator==(const Matrix<M,N>& m1, const Matrix<M,N>& m2)
+  CUBIST_HOSTDEVICE bool operator==(const Matrix<M,N>& m1, const Matrix<M,N>& m2)
   {
     for ( unsigned int i = 0; i < M*N; ++i )
       if ( m1[i] != m2[i] ) return false;
@@ -294,7 +294,7 @@ namespace cubist
   }
 
   template<unsigned int M, unsigned int N>
-  SUTIL_HOSTDEVICE bool operator!=(const Matrix<M,N>& m1, const Matrix<M,N>& m2)
+  CUBIST_HOSTDEVICE bool operator!=(const Matrix<M,N>& m1, const Matrix<M,N>& m2)
   {
     for ( unsigned int i = 0; i < M*N; ++i )
       if ( m1[i] != m2[i] ) return true;
@@ -303,7 +303,7 @@ namespace cubist
 
   // Subtract two matrices of the same size.
   template<unsigned int M, unsigned int N>
-  SUTIL_HOSTDEVICE Matrix<M,N> operator-(const Matrix<M,N>& m1, const Matrix<M,N>& m2)
+  CUBIST_HOSTDEVICE Matrix<M,N> operator-(const Matrix<M,N>& m1, const Matrix<M,N>& m2)
   {
     Matrix<M,N> temp( m1 );
     temp -= m2;
@@ -313,7 +313,7 @@ namespace cubist
 
   // Subtract two matrices of the same size.
   template<unsigned int M, unsigned int N>
-  SUTIL_HOSTDEVICE Matrix<M,N>& operator-=(Matrix<M,N>& m1, const Matrix<M,N>& m2)
+  CUBIST_HOSTDEVICE Matrix<M,N>& operator-=(Matrix<M,N>& m1, const Matrix<M,N>& m2)
   {
     for ( unsigned int i = 0; i < M*N; ++i )
       m1[i] -= m2[i];
@@ -323,7 +323,7 @@ namespace cubist
 
   // Add two matrices of the same size.
   template<unsigned int M, unsigned int N>
-  SUTIL_HOSTDEVICE Matrix<M,N> operator+(const Matrix<M,N>& m1, const Matrix<M,N>& m2)
+  CUBIST_HOSTDEVICE Matrix<M,N> operator+(const Matrix<M,N>& m1, const Matrix<M,N>& m2)
   {
     Matrix<M,N> temp( m1 );
     temp += m2;
@@ -333,7 +333,7 @@ namespace cubist
 
   // Add two matrices of the same size.
   template<unsigned int M, unsigned int N>
-  SUTIL_HOSTDEVICE Matrix<M,N>& operator+=(Matrix<M,N>& m1, const Matrix<M,N>& m2)
+  CUBIST_HOSTDEVICE Matrix<M,N>& operator+=(Matrix<M,N>& m1, const Matrix<M,N>& m2)
   {
     for ( unsigned int i = 0; i < M*N; ++i )
       m1[i] += m2[i];
@@ -343,7 +343,7 @@ namespace cubist
 
   // Multiply two compatible matrices.
   template<unsigned int M, unsigned int N, unsigned int R>
-  SUTIL_HOSTDEVICE Matrix<M,R> operator*( const Matrix<M,N>& m1, const Matrix<N,R>& m2)
+  CUBIST_HOSTDEVICE Matrix<M,R> operator*( const Matrix<M,N>& m1, const Matrix<N,R>& m2)
   {
     Matrix<M,R> temp;
 
@@ -364,7 +364,7 @@ namespace cubist
 
   // Multiply two compatible matrices.
   template<unsigned int M>
-  SUTIL_HOSTDEVICE Matrix<M,M>& operator*=(Matrix<M,M>& m1, const Matrix<M,M>& m2)
+  CUBIST_HOSTDEVICE Matrix<M,M>& operator*=(Matrix<M,M>& m1, const Matrix<M,M>& m2)
   {
     m1 = m1*m2;
     return m1;
@@ -373,7 +373,7 @@ namespace cubist
 
   // Multiply matrix by vector
   template<unsigned int M, unsigned int N>
-  SUTIL_HOSTDEVICE typename Matrix<M,N>::floatM operator*(const Matrix<M,N>& m, const typename Matrix<M,N>::floatN& vec )
+  CUBIST_HOSTDEVICE typename Matrix<M,N>::floatM operator*(const Matrix<M,N>& m, const typename Matrix<M,N>::floatN& vec )
   {
     typename Matrix<M,N>::floatM temp;
     float* t = reinterpret_cast<float*>( &temp );
@@ -392,7 +392,7 @@ namespace cubist
 
   // Multiply matrix2xN by floatN
   template<unsigned int N>
-  SUTIL_INLINE SUTIL_HOSTDEVICE float2 operator*(const Matrix<2,N>& m, const typename Matrix<2,N>::floatN& vec )
+  CUBIST_INLINE CUBIST_HOSTDEVICE float2 operator*(const Matrix<2,N>& m, const typename Matrix<2,N>::floatN& vec )
   {
     float2 temp = { 0.0f, 0.0f };
     const float* v = reinterpret_cast<const float*>( &vec );
@@ -409,7 +409,7 @@ namespace cubist
 
   // Multiply matrix3xN by floatN
   template<unsigned int N>
-  SUTIL_INLINE SUTIL_HOSTDEVICE float3 operator*(const Matrix<3,N>& m, const typename Matrix<3,N>::floatN& vec )
+  CUBIST_INLINE CUBIST_HOSTDEVICE float3 operator*(const Matrix<3,N>& m, const typename Matrix<3,N>::floatN& vec )
   {
     float3 temp = { 0.0f, 0.0f, 0.0f };
     const float* v = reinterpret_cast<const float*>( &vec );
@@ -429,7 +429,7 @@ namespace cubist
 
   // Multiply matrix4xN by floatN
   template<unsigned int N>
-  SUTIL_INLINE SUTIL_HOSTDEVICE float4 operator*(const Matrix<4,N>& m, const typename Matrix<4,N>::floatN& vec )
+  CUBIST_INLINE CUBIST_HOSTDEVICE float4 operator*(const Matrix<4,N>& m, const typename Matrix<4,N>::floatN& vec )
   {
     float4 temp = { 0.0f, 0.0f, 0.0f, 0.0f };
 
@@ -452,7 +452,7 @@ namespace cubist
   }
 
   // Multiply matrix4x4 by float4
-  SUTIL_INLINE SUTIL_HOSTDEVICE float3 operator*(const Matrix<3,4>& m, const float4& vec )
+  CUBIST_INLINE CUBIST_HOSTDEVICE float3 operator*(const Matrix<3,4>& m, const float4& vec )
   {
     float3 temp;
     temp.x  = m[ 0] * vec.x +
@@ -471,7 +471,7 @@ namespace cubist
   }
 
   // Multiply matrix4x4 by float4
-  SUTIL_INLINE SUTIL_HOSTDEVICE float4 operator*(const Matrix<4,4>& m, const float4& vec )
+  CUBIST_INLINE CUBIST_HOSTDEVICE float4 operator*(const Matrix<4,4>& m, const float4& vec )
   {
     float4 temp;
     temp.x  = m[ 0] * vec.x +
@@ -496,7 +496,7 @@ namespace cubist
 
   // Multiply vector by matrix
   template<unsigned int M, unsigned int N>
-  SUTIL_HOSTDEVICE typename Matrix<M,N>::floatN operator*(const typename Matrix<M,N>::floatM& vec, const Matrix<M,N>& m)
+  CUBIST_HOSTDEVICE typename Matrix<M,N>::floatN operator*(const typename Matrix<M,N>::floatM& vec, const Matrix<M,N>& m)
   {
     typename Matrix<M,N>::floatN  temp;
     float* t = reinterpret_cast<float*>( &temp );
@@ -516,7 +516,7 @@ namespace cubist
 
   // Multply matrix by a scalar.
   template<unsigned int M, unsigned int N>
-  SUTIL_HOSTDEVICE Matrix<M,N> operator*(const Matrix<M,N>& m, float f)
+  CUBIST_HOSTDEVICE Matrix<M,N> operator*(const Matrix<M,N>& m, float f)
   {
     Matrix<M,N> temp( m );
     temp *= f;
@@ -526,7 +526,7 @@ namespace cubist
 
   // Multply matrix by a scalar.
   template<unsigned int M, unsigned int N>
-  SUTIL_HOSTDEVICE Matrix<M,N>& operator*=(Matrix<M,N>& m, float f)
+  CUBIST_HOSTDEVICE Matrix<M,N>& operator*=(Matrix<M,N>& m, float f)
   {
     for ( unsigned int i = 0; i < M*N; ++i )
       m[i] *= f;
@@ -536,7 +536,7 @@ namespace cubist
 
   // Multply matrix by a scalar.
   template<unsigned int M, unsigned int N>
-  SUTIL_HOSTDEVICE Matrix<M,N>  operator*(float f, const Matrix<M,N>& m)
+  CUBIST_HOSTDEVICE Matrix<M,N>  operator*(float f, const Matrix<M,N>& m)
   {
     Matrix<M,N> temp;
 
@@ -549,7 +549,7 @@ namespace cubist
 
   // Divide matrix by a scalar.
   template<unsigned int M, unsigned int N>
-  SUTIL_HOSTDEVICE Matrix<M,N> operator/(const Matrix<M,N>& m, float f)
+  CUBIST_HOSTDEVICE Matrix<M,N> operator/(const Matrix<M,N>& m, float f)
   {
     Matrix<M,N> temp( m );
     temp /= f;
@@ -559,7 +559,7 @@ namespace cubist
 
   // Divide matrix by a scalar.
   template<unsigned int M, unsigned int N>
-  SUTIL_HOSTDEVICE Matrix<M,N>& operator/=(Matrix<M,N>& m, float f)
+  CUBIST_HOSTDEVICE Matrix<M,N>& operator/=(Matrix<M,N>& m, float f)
   {
     float inv_f = 1.0f / f;
     for ( unsigned int i = 0; i < M*N; ++i )
@@ -569,7 +569,7 @@ namespace cubist
 
   // Returns the transpose of the matrix.
   template<unsigned int M, unsigned int N>
-  SUTIL_INLINE SUTIL_HOSTDEVICE Matrix<N,M> Matrix<M,N>::transpose() const
+  CUBIST_INLINE CUBIST_HOSTDEVICE Matrix<N,M> Matrix<M,N>::transpose() const
   {
     Matrix<N,M> ret;
     for( unsigned int row = 0; row < M; ++row )
@@ -580,7 +580,7 @@ namespace cubist
 
   // Returns the determinant of the matrix.
   template<>
-  SUTIL_INLINE SUTIL_HOSTDEVICE float Matrix<3,3>::det() const
+  CUBIST_INLINE CUBIST_HOSTDEVICE float Matrix<3,3>::det() const
   {
     const float* m   = m_data;
     float d = m[0]*m[4]*m[8] + m[1]*m[5]*m[6] + m[2]*m[3]*m[7]
@@ -590,7 +590,7 @@ namespace cubist
 
   // Returns the determinant of the matrix.
   template<>
-  SUTIL_INLINE SUTIL_HOSTDEVICE float Matrix<4,4>::det() const
+  CUBIST_INLINE CUBIST_HOSTDEVICE float Matrix<4,4>::det() const
   {
     const float* m   = m_data;
     float d =
@@ -611,7 +611,7 @@ namespace cubist
 
   // Returns the inverse of the matrix.
   template<>
-  SUTIL_INLINE SUTIL_HOSTDEVICE Matrix<4,4> Matrix<4,4>::inverse() const
+  CUBIST_INLINE CUBIST_HOSTDEVICE Matrix<4,4> Matrix<4,4>::inverse() const
   {
     Matrix<4,4> dst;
     const float* m   = m_data;
@@ -639,7 +639,7 @@ namespace cubist
   // Returns a rotation matrix.
   // This is a static member.
   template<>
-  SUTIL_INLINE SUTIL_HOSTDEVICE Matrix<4,4> Matrix<4,4>::rotate(const float radians, const float3& axis)
+  CUBIST_INLINE CUBIST_HOSTDEVICE Matrix<4,4> Matrix<4,4>::rotate(const float radians, const float3& axis)
   {
     Matrix<4,4> Mat = Matrix<4,4>::identity();
     float *m = Mat.getData();
@@ -676,7 +676,7 @@ namespace cubist
   // Returns a translation matrix.
   // This is a static member.
   template<>
-  SUTIL_INLINE SUTIL_HOSTDEVICE Matrix<4,4> Matrix<4,4>::translate(const float3& vec)
+  CUBIST_INLINE CUBIST_HOSTDEVICE Matrix<4,4> Matrix<4,4>::translate(const float3& vec)
   {
     Matrix<4,4> Mat = Matrix<4,4>::identity();
     float *m = Mat.getData();
@@ -691,7 +691,7 @@ namespace cubist
   // Returns a scale matrix.
   // This is a static member.
   template<>
-  SUTIL_INLINE SUTIL_HOSTDEVICE Matrix<4,4> Matrix<4,4>::scale(const float3& vec)
+  CUBIST_INLINE CUBIST_HOSTDEVICE Matrix<4,4> Matrix<4,4>::scale(const float3& vec)
   {
     Matrix<4,4> Mat = Matrix<4,4>::identity();
     float *m = Mat.getData();
@@ -706,7 +706,7 @@ namespace cubist
 
   // This is a static member.
   template<>
-  SUTIL_INLINE SUTIL_HOSTDEVICE Matrix<4,4>  Matrix<4,4>::fromBasis( const float3& u, const float3& v, const float3& w, const float3& c )
+  CUBIST_INLINE CUBIST_HOSTDEVICE Matrix<4,4>  Matrix<4,4>::fromBasis( const float3& u, const float3& v, const float3& w, const float3& c )
   {
     float m[16];
     m[ 0] = u.x;
@@ -733,7 +733,7 @@ namespace cubist
   }
 
   template<>
-  SUTIL_INLINE SUTIL_HOSTDEVICE Matrix<3,4> Matrix<3,4>::affineIdentity()
+  CUBIST_INLINE CUBIST_HOSTDEVICE Matrix<3,4> Matrix<3,4>::affineIdentity()
   {
       Matrix<3,4> m;
       m.m_data[ 0] = 1.0f;
@@ -756,7 +756,7 @@ namespace cubist
   // Returns the identity matrix.
   // This is a static member.
   template<unsigned int M, unsigned int N>
-  SUTIL_INLINE SUTIL_HOSTDEVICE Matrix<N,N> Matrix<M,N>::identity()
+  CUBIST_INLINE CUBIST_HOSTDEVICE Matrix<N,N> Matrix<M,N>::identity()
   {
     float temp[N*N];
     for(unsigned int i = 0; i < N*N; ++i)
@@ -768,7 +768,7 @@ namespace cubist
 
   // Ordered comparison operator so that the matrix can be used in an STL container.
   template<unsigned int M, unsigned int N>
-  SUTIL_INLINE SUTIL_HOSTDEVICE bool Matrix<M,N>::operator<( const Matrix<M, N>& rhs ) const
+  CUBIST_INLINE CUBIST_HOSTDEVICE bool Matrix<M,N>::operator<( const Matrix<M, N>& rhs ) const
   {
     for( unsigned int i = 0; i < N*M; ++i ) {
       if( m_data[i] < rhs[i] )
@@ -790,7 +790,7 @@ namespace cubist
   typedef Matrix<4, 4> Matrix4x4;
 
 
-  SUTIL_INLINE SUTIL_HOSTDEVICE Matrix<3,3> make_matrix3x3(const Matrix<4,4> &matrix)
+  CUBIST_INLINE CUBIST_HOSTDEVICE Matrix<3,3> make_matrix3x3(const Matrix<4,4> &matrix)
   {
     Matrix<3,3> Mat;
     float *m = Mat.getData();

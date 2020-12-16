@@ -586,7 +586,7 @@ void Scene::finalize()
 }
 
 
-void sutil::Scene::cleanup()
+void cubist::Scene::cleanup()
 {
     // OptiX cleanup
     if( m_pipeline )
@@ -670,7 +670,7 @@ void sutil::Scene::cleanup()
 }
 
 
-sutil::Camera sutil::Scene::camera() const
+cubist::Camera cubist::Scene::camera() const
 {
     if( !m_cameras.empty() )
     {
@@ -1396,4 +1396,4 @@ void Scene::createSBT()
     }
 }
 
-} // namespace sutil
+} // namespace cubist

@@ -200,7 +200,7 @@ float clamp( float f, float a, float b )
     return std::max( a, std::min( f, b ) );
 }
 
-sutil::Texture PPMLoader::loadTexture( const float3& default_color, cudaTextureDesc* tex_desc )
+cubist::Texture PPMLoader::loadTexture( const float3& default_color, cudaTextureDesc* tex_desc )
 {
     std::vector<unsigned char> buffer;
     const unsigned int         nx = width();
@@ -272,7 +272,7 @@ sutil::Texture PPMLoader::loadTexture( const float3& default_color, cudaTextureD
     cudaTextureObject_t cuda_tex = 0;
     CUDA_CHECK( cudaCreateTextureObject( &cuda_tex, &res_desc, tex_desc, nullptr ) );
 
-    sutil::Texture ppm_texture = {cuda_array, cuda_tex};
+    cubist::Texture ppm_texture = {cuda_array, cuda_tex};
     return ppm_texture;
 }
 
@@ -283,7 +283,7 @@ sutil::Texture PPMLoader::loadTexture( const float3& default_color, cudaTextureD
 //
 //-----------------------------------------------------------------------------
 
-sutil::Texture loadPPMTexture( const std::string& filename, const float3& default_color, cudaTextureDesc* tex_desc )
+cubist::Texture loadPPMTexture( const std::string& filename, const float3& default_color, cudaTextureDesc* tex_desc )
 {
     PPMLoader ppm( filename );
     return ppm.loadTexture( default_color, tex_desc );

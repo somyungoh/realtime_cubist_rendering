@@ -53,11 +53,11 @@
             if( err != GL_NO_ERROR )                                           \
             {                                                                  \
                 std::stringstream ss;                                          \
-                ss << "GL error " <<  sutil::getGLErrorString( err ) << " at " \
+                ss << "GL error " <<  cubist::getGLErrorString( err ) << " at " \
                    << __FILE__  << "(" <<  __LINE__  << "): " << #call         \
                    << std::endl;                                               \
                 std::cerr << ss.str() << std::endl;                            \
-                throw sutil::Exception( ss.str().c_str() );                    \
+                throw cubist::Exception( ss.str().c_str() );                    \
             }                                                                  \
         }                                                                      \
         while (0)
@@ -70,10 +70,10 @@
             if( err != GL_NO_ERROR )                                           \
             {                                                                  \
                 std::stringstream ss;                                          \
-                ss << "GL error " <<  sutil::getGLErrorString( err ) << " at " \
+                ss << "GL error " <<  cubist::getGLErrorString( err ) << " at " \
                    << __FILE__  << "(" <<  __LINE__  << ")";                   \
                 std::cerr << ss.str() << std::endl;                            \
-                throw sutil::Exception( ss.str().c_str() );                    \
+                throw cubist::Exception( ss.str().c_str() );                    \
             }                                                                  \
         }                                                                      \
         while (0)
@@ -99,7 +99,7 @@
             std::stringstream ss;                                              \
             ss << "Optix call '" << #call << "' failed: " __FILE__ ":"         \
                << __LINE__ << ")\n";                                           \
-            throw sutil::Exception( res, ss.str().c_str() );                   \
+            throw cubist::Exception( res, ss.str().c_str() );                   \
         }                                                                      \
     } while( 0 )
 
@@ -117,7 +117,7 @@
                << __LINE__ << ")\nLog:\n" << log                               \
                << ( sizeof_log_returned > sizeof( log ) ? "<TRUNCATED>" : "" ) \
                << "\n";                                                        \
-            throw sutil::Exception( res, ss.str().c_str() );                   \
+            throw cubist::Exception( res, ss.str().c_str() );                   \
         }                                                                      \
     } while( 0 )
 
@@ -142,7 +142,7 @@
                << __LINE__ << ")\nLog:\n" << LOG                               \
                << ( LOG_SIZE > sizeof( LOG ) ? "<TRUNCATED>" : "" )            \
                << "\n";                                                        \
-            throw sutil::Exception( res, ss.str().c_str() );                   \
+            throw cubist::Exception( res, ss.str().c_str() );                   \
         }                                                                      \
     } while( 0 )
 
@@ -174,7 +174,7 @@
             ss << "CUDA call (" << #call << " ) failed with error: '"          \
                << cudaGetErrorString( error )                                  \
                << "' (" __FILE__ << ":" << __LINE__ << ")\n";                  \
-            throw sutil::Exception( ss.str().c_str() );                        \
+            throw cubist::Exception( ss.str().c_str() );                        \
         }                                                                      \
     } while( 0 )
 
@@ -190,7 +190,7 @@
             ss << "CUDA error on synchronize with error '"                     \
                << cudaGetErrorString( error )                                  \
                << "' (" __FILE__ << ":" << __LINE__ << ")\n";                  \
-            throw sutil::Exception( ss.str().c_str() );                        \
+            throw cubist::Exception( ss.str().c_str() );                        \
         }                                                                      \
     } while( 0 )
 
@@ -216,30 +216,30 @@
 //
 //------------------------------------------------------------------------------
 
-#define SUTIL_ASSERT( cond )                                                   \
+#define CUBIST_ASSERT( cond )                                                   \
     do                                                                         \
     {                                                                          \
         if( !(cond) )                                                          \
         {                                                                      \
             std::stringstream ss;                                              \
             ss << __FILE__ << " (" << __LINE__ << "): " << #cond;              \
-            throw sutil::Exception( ss.str().c_str() );                        \
+            throw cubist::Exception( ss.str().c_str() );                        \
         }                                                                      \
     } while( 0 )
 
 
-#define SUTIL_ASSERT_MSG( cond, msg )                                          \
+#define CUBIST_ASSERT_MSG( cond, msg )                                          \
     do                                                                         \
     {                                                                          \
         if( !(cond) )                                                          \
         {                                                                      \
             std::stringstream ss;                                              \
             ss << (msg) << ": " << __FILE__ << " (" << __LINE__ << "): " << #cond ; \
-            throw sutil::Exception( ss.str().c_str() ); \
+            throw cubist::Exception( ss.str().c_str() ); \
         }                                                                      \
     } while( 0 )
 
-namespace sutil
+namespace cubist
 {
 
 class Exception : public std::runtime_error
@@ -298,4 +298,4 @@ inline void checkGLError()
 }
 
 
-} // end namespace sutil
+} // end namespace cubist

@@ -211,4 +211,4 @@ bool Trackball::wheelEvent(int dir)
     return true;
 }
 
-} // namespace sutil
+} // namespace cubist

@@ -43,7 +43,7 @@
 // Creates a TextureSampler object for the given PPM file.  If filename is
 // empty or PPMLoader fails, a 1x1 texture is created with the provided default
 // texture color.
-SUTILAPI sutil::Texture loadPPMTexture( const std::string& ppm_filename, const float3& default_color, cudaTextureDesc* tex_desc );
+CUBISTAPI cubist::Texture loadPPMTexture( const std::string& ppm_filename, const float3& default_color, cudaTextureDesc* tex_desc );
 
 //-----------------------------------------------------------------------------
 //
@@ -54,15 +54,15 @@ SUTILAPI sutil::Texture loadPPMTexture( const std::string& ppm_filename, const f
 class PPMLoader
 {
   public:
-    SUTILAPI PPMLoader( const std::string& filename, const bool vflip = false );
-    SUTILAPI ~PPMLoader();
+    CUBISTAPI PPMLoader( const std::string& filename, const bool vflip = false );
+    CUBISTAPI ~PPMLoader();
 
-    SUTILAPI sutil::Texture loadTexture( const float3& default_color, cudaTextureDesc* tex_desc );
+    CUBISTAPI cubist::Texture loadTexture( const float3& default_color, cudaTextureDesc* tex_desc );
 
-    SUTILAPI bool           failed() const;
-    SUTILAPI unsigned int   width() const;
-    SUTILAPI unsigned int   height() const;
-    SUTILAPI unsigned char* raster() const;
+    CUBISTAPI bool           failed() const;
+    CUBISTAPI unsigned int   width() const;
+    CUBISTAPI unsigned int   height() const;
+    CUBISTAPI unsigned char* raster() const;
 
   private:
     unsigned int   m_nx;

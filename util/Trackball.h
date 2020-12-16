@@ -28,7 +28,7 @@
 
 #pragma once
 
-#include <sutil/sutilapi.h>
+#include "sutilapi.h"
 
 namespace cubist
 {
@@ -38,31 +38,31 @@ class Camera;
 class Trackball
 {
 public:
-    SUTILAPI bool wheelEvent(int dir);
+    CUBISTAPI bool wheelEvent(int dir);
 
-    SUTILAPI void startTracking(int x, int y);
-    SUTILAPI void updateTracking(int x, int y, int canvasWidth, int canvasHeight);
-    SUTILAPI void zoom(int direction);
-    SUTILAPI float moveSpeed() const { return m_moveSpeed; }
-    SUTILAPI void setMoveSpeed(const float& val) { m_moveSpeed = val; }
+    CUBISTAPI void startTracking(int x, int y);
+    CUBISTAPI void updateTracking(int x, int y, int canvasWidth, int canvasHeight);
+    CUBISTAPI void zoom(int direction);
+    CUBISTAPI float moveSpeed() const { return m_moveSpeed; }
+    CUBISTAPI void setMoveSpeed(const float& val) { m_moveSpeed = val; }
 
     // Set the camera that will be changed according to user input.
     // Warning, this also initializes the reference frame of the trackball from the camera.
     // The reference frame defines the orbit's singularity.
-    SUTILAPI inline void setCamera(Camera* camera) { m_camera = camera; reinitOrientationFromCamera(); }
-    SUTILAPI inline const Camera* currentCamera() const { return m_camera; }
+    CUBISTAPI inline void setCamera(Camera* camera) { m_camera = camera; reinitOrientationFromCamera(); }
+    CUBISTAPI inline const Camera* currentCamera() const { return m_camera; }
 
     // Setting the gimbal lock to 'on' will fix the reference frame (i.e., the singularity of the trackball).
     // In most cases this is preferred.
     // For free scene exploration the gimbal lock can be turned off, which causes the trackball's reference frame
     // to be update on every camera update (adopted from the camera).
-    SUTILAPI bool gimbalLock() const { return m_gimbalLock; }
-    SUTILAPI void setGimbalLock(bool val) { m_gimbalLock = val; }
+    CUBISTAPI bool gimbalLock() const { return m_gimbalLock; }
+    CUBISTAPI void setGimbalLock(bool val) { m_gimbalLock = val; }
 
     // Adopts the reference frame from the camera.
     // Note that the reference frame of the camera usually has a different 'up' than the 'up' of the camera.
     // Though, typically, it is desired that the trackball's reference frame aligns with the actual up of the camera.
-    SUTILAPI void reinitOrientationFromCamera();
+    CUBISTAPI void reinitOrientationFromCamera();
 
     // Specify the frame of the orbit that the camera is orbiting around.
     // The important bit is the 'up' of that frame as this is defines the singularity.
@@ -71,7 +71,7 @@ public:
     // However, to be able to really freely move around, you can also constantly update
     // the reference frame of the trackball. This can be done by calling reinitOrientationFromCamera().
     // In most cases it is not required though (set the frame/up once, leave it as is).
-    SUTILAPI void setReferenceFrame(const float3& u, const float3& v, const float3& w);
+    CUBISTAPI void setReferenceFrame(const float3& u, const float3& v, const float3& w);
 
     enum ViewMode
     {
@@ -79,8 +79,8 @@ public:
         LookAtFixed
     };
 
-    SUTILAPI ViewMode viewMode() const { return m_viewMode; }
-    SUTILAPI void setViewMode(ViewMode val) { m_viewMode = val; }
+    CUBISTAPI ViewMode viewMode() const { return m_viewMode; }
+    CUBISTAPI void setViewMode(ViewMode val) { m_viewMode = val; }
 
 private:
     void updateCamera();

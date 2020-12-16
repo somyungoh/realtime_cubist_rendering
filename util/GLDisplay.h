@@ -44,10 +44,10 @@ namespace cubist
 class GLDisplay
 {
 public:
-    SUTILAPI GLDisplay(
+    CUBISTAPI GLDisplay(
         BufferImageFormat format = sutil::BufferImageFormat::UNSIGNED_BYTE4);
 
-    SUTILAPI void display(
+    CUBISTAPI void display(
             const int32_t  screen_res_x,
             const int32_t  screen_res_y,
             const int32_t  framebuf_res_x,
@@ -66,4 +66,4 @@ private:
     static const std::string s_frag_source;
 };
 
-} // end namespace sutil
+} // end namespace cubist

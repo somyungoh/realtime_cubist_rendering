@@ -126,7 +126,7 @@ GLuint createGLProgram(
 GLint getGLUniformLocation( GLuint program, const std::string& name )
 {
 	GLint loc = glGetUniformLocation( program, name.c_str() );
-    SUTIL_ASSERT_MSG( loc != -1, "Failed to get uniform loc for '" + name + "'" );
+    CUBIST_ASSERT_MSG( loc != -1, "Failed to get uniform loc for '" + name + "'" );
     return loc;
 }
 
@@ -286,4 +286,4 @@ void GLDisplay::display(
     GL_CHECK_ERRORS();
 }
 
-} // namespace sutil
+} // namespace cubist

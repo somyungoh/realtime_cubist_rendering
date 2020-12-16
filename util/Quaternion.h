@@ -268,4 +268,4 @@ inline Matrix4x4 Quaternion::rotationMatrix() const
     return m;
 }
 
-} // end namespace sutil
+} // end namespace cubist

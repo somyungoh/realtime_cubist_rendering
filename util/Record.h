@@ -42,4 +42,4 @@ struct EmptyData {};
 
 typedef Record<EmptyData> EmptyRecord;
 
-} // end namespace sutil
+} // end namespace cubist

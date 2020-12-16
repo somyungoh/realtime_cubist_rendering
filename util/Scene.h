@@ -34,7 +34,7 @@
 #include "Camera.h"
 #include "Matrix.h"
 #include "Preprocessor.h"
-#include "sutilapi.h"
+#include "CUBISTAPI.h
 
 #include <cuda_runtime.h>
 
@@ -52,8 +52,8 @@ namespace cubist
 class Scene
 {
 public:
-    SUTILAPI Scene();
-    SUTILAPI ~Scene();
+    CUBISTAPI Scene();
+    CUBISTAPI ~Scene();
     struct MeshGroup
     {
         std::string                       name;
@@ -74,43 +74,43 @@ public:
     };
 
 
-    SUTILAPI void addCamera  ( const Camera& camera            )    { m_cameras.push_back( camera );   }
-    SUTILAPI void addMesh    ( std::shared_ptr<MeshGroup> mesh )    { m_meshes.push_back( mesh );      }
-    SUTILAPI void addMaterial( const MaterialData::Pbr& mtl    )    { m_materials.push_back( mtl );    }
-    SUTILAPI void addBuffer  ( const uint64_t buf_size, const void* data );
-    SUTILAPI void addImage(
+    CUBISTAPI void addCamera  ( const Camera& camera            )    { m_cameras.push_back( camera );   }
+    CUBISTAPI void addMesh    ( std::shared_ptr<MeshGroup> mesh )    { m_meshes.push_back( mesh );      }
+    CUBISTAPI void addMaterial( const MaterialData::Pbr& mtl    )    { m_materials.push_back( mtl );    }
+    CUBISTAPI void addBuffer  ( const uint64_t buf_size, const void* data );
+    CUBISTAPI void addImage(
                 const int32_t width,
                 const int32_t height,
                 const int32_t bits_per_component,
                 const int32_t num_components,
                 const void*   data
                 );
-    SUTILAPI void addSampler(
+    CUBISTAPI void addSampler(
                 cudaTextureAddressMode address_s,
                 cudaTextureAddressMode address_t,
                 cudaTextureFilterMode  filter_mode,
                 const int32_t          image_idx
                 );
 
-    SUTILAPI CUdeviceptr                    getBuffer ( int32_t buffer_index  )const;
-    SUTILAPI cudaArray_t                    getImage  ( int32_t image_index   )const;
-    SUTILAPI cudaTextureObject_t            getSampler( int32_t sampler_index )const;
+    CUBISTAPI CUdeviceptr                    getBuffer ( int32_t buffer_index  )const;
+    CUBISTAPI cudaArray_t                    getImage  ( int32_t image_index   )const;
+    CUBISTAPI cudaTextureObject_t            getSampler( int32_t sampler_index )const;
 
-    SUTILAPI void                           finalize();
-    SUTILAPI void                           cleanup();
+    CUBISTAPI void                           finalize();
+    CUBISTAPI void                           cleanup();
 
-    SUTILAPI Camera                                    camera()const;
-    SUTILAPI OptixPipeline                             pipeline()const              { return m_pipeline;   }
-    SUTILAPI const OptixShaderBindingTable*            sbt()const                   { return &m_sbt;       }
-    SUTILAPI OptixTraversableHandle                    traversableHandle() const    { return m_ias_handle; }
-    SUTILAPI sutil::Aabb                               aabb() const                 { return m_scene_aabb; }
-    SUTILAPI OptixDeviceContext                        context() const              { return m_context;    }
-    SUTILAPI const std::vector<MaterialData::Pbr>&     materials() const            { return m_materials;  }
-    SUTILAPI const std::vector<std::shared_ptr<MeshGroup>>& meshes() const          { return m_meshes;     }
+    CUBISTAPI Camera                                    camera()const;
+    CUBISTAPI OptixPipeline                             pipeline()const              { return m_pipeline;   }
+    CUBISTAPI const OptixShaderBindingTable*            sbt()const                   { return &m_sbt;       }
+    CUBISTAPI OptixTraversableHandle                    traversableHandle() const    { return m_ias_handle; }
+    CUBISTAPI cubist::Aabb                               aabb() const                 { return m_scene_aabb; }
+    CUBISTAPI OptixDeviceContext                        context() const              { return m_context;    }
+    CUBISTAPI const std::vector<MaterialData::Pbr>&     materials() const            { return m_materials;  }
+    CUBISTAPI const std::vector<std::shared_ptr<MeshGroup>>& meshes() const          { return m_meshes;     }
 
-    SUTILAPI void createContext();
-    SUTILAPI void buildMeshAccels( uint32_t triangle_input_flags = OPTIX_GEOMETRY_FLAG_DISABLE_ANYHIT );
-    SUTILAPI void buildInstanceAccel( int rayTypeCount = whitted::RAY_TYPE_COUNT );
+    CUBISTAPI void createContext();
+    CUBISTAPI void buildMeshAccels( uint32_t triangle_input_flags = OPTIX_GEOMETRY_FLAG_DISABLE_ANYHIT );
+    CUBISTAPI void buildInstanceAccel( int rayTypeCount = whitted::RAY_TYPE_COUNT );
 
 private:
     void createPTXModule();
@@ -126,7 +126,7 @@ private:
     std::vector<CUdeviceptr>             m_buffers;
     std::vector<cudaTextureObject_t>     m_samplers;
     std::vector<cudaArray_t>             m_images;
-    sutil::Aabb                          m_scene_aabb;
+    cubist::Aabb                          m_scene_aabb;
 
     OptixDeviceContext                   m_context                  = 0;
     OptixShaderBindingTable              m_sbt                      = {};
@@ -144,7 +144,7 @@ private:
 };
 
 
-SUTILAPI void loadScene( const std::string& filename, Scene& scene );
+CUBISTAPI void loadScene( const std::string& filename, Scene& scene );
 
 } // end namespace sutil
 
