@@ -30,21 +30,6 @@
 #define __samples_util_cubistapi_h__
 
 #ifndef CUBISTAPI
-#  if cubist_7_sdk_EXPORTS /* Set by CMAKE */
-#    if defined( _WIN32 ) || defined( _WIN64 )
-#      define CUBISTAPI __declspec(dllexport)
-#      define CUBISTCLASSAPI
-#    elif defined( linux ) || defined( __linux__ ) || defined ( __CYGWIN__ )
-#      define CUBISTAPI __attribute__ ((visibility ("default")))
-#      define CUBISTCLASSAPI CUBISTAPI
-#    elif defined( __APPLE__ ) && defined( __MACH__ )
-#      define CUBISTAPI __attribute__ ((visibility ("default")))
-#      define CUBISTCLASSAPI CUBISTAPI
-#    else
-#      error "CODE FOR THIS OS HAS NOT YET BEEN DEFINED"
-#    endif
-
-#  else /* cubist_7_sdk_EXPORTS */
 
 #    if defined( _WIN32 ) || defined( _WIN64 )
 #      define CUBISTAPI __declspec(dllimport)
@@ -62,7 +47,6 @@
 #      error "CODE FOR THIS OS HAS NOT YET BEEN DEFINED"
 #    endif
 
-#  endif /* sutil_7_sdk_EXPORTS */
-#endif
+#endif // CUBISTAPI
 
-#endif /* __samples_util_cubistapi_h__ */
+#endif // __samples_util_cubistapi_h__
