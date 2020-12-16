@@ -27,10 +27,10 @@
 //
 #include <optix.h>
 
-#include <cuda/LocalGeometry.h>
-#include <cuda/helpers.h>
-#include <cuda/random.h>
-#include <sutil/vec_math.h>
+#include "LocalGeometry.h"
+#include "helpers.h"
+#include <random.h>
+#include "../util/vec_math.h"
 
 #include "whitted_cuda.h"
 
@@ -44,11 +44,11 @@ extern "C" __global__ void __raygen__pinhole()
 {
     const uint3  launch_idx     = optixGetLaunchIndex();
     const uint3  launch_dims    = optixGetLaunchDimensions();
-    const float3 eye            = whitted::params.eye;
-    const float3 U              = whitted::params.U;
-    const float3 V              = whitted::params.V;
-    const float3 W              = whitted::params.W;
-    const int    subframe_index = whitted::params.subframe_index;
+    const float3 eye            = cubist::params.eye;
+    const float3 U              = cubist::params.U;
+    const float3 V              = cubist::params.V;
+    const float3 W              = cubist::params.W;
+    const int    subframe_index = cubist::params.subframe_index;
 
     //
     // Generate camera ray
@@ -70,12 +70,12 @@ extern "C" __global__ void __raygen__pinhole()
     //
     // Trace camera ray
     //
-    whitted::PayloadRadiance payload;
+    cubist::PayloadRadiance payload;
     payload.result     = make_float3( 0.0f );
     payload.importance = 1.0f;
     payload.depth      = 0.0f;
 
-    traceRadiance( whitted::params.handle, ray_origin, ray_direction,
+    traceRadiance( cubist::params.handle, ray_origin, ray_direction,
                    0.01f,  // tmin       // TODO: smarter offset
                    1e16f,  // tmax
                    &payload );
@@ -90,29 +90,29 @@ extern "C" __global__ void __raygen__pinhole()
     if( subframe_index > 0 )
     {
         const float  a                = 1.0f / static_cast<float>( subframe_index + 1 );
-        const float3 accum_color_prev = make_float3( whitted::params.accum_buffer[image_index] );
+        const float3 accum_color_prev = make_float3( cubist::params.accum_buffer[image_index] );
         accum_color                   = lerp( accum_color_prev, accum_color, a );
     }
-    whitted::params.accum_buffer[image_index] = make_float4( accum_color, 1.0f );
-    whitted::params.frame_buffer[image_index] = make_color( accum_color );
+    cubist::params.accum_buffer[image_index] = make_float4( accum_color, 1.0f );
+    cubist::params.frame_buffer[image_index] = make_color( accum_color );
 }
 
 
 extern "C" __global__ void __miss__constant_radiance()
 {
-    whitted::setPayloadResult( whitted::params.miss_color );
+    cubist::setPayloadResult( cubist::params.miss_color );
 }
 
 
 extern "C" __global__ void __closesthit__occlusion()
 {
-    whitted::setPayloadOcclusion( true );
+    cubist::setPayloadOcclusion( true );
 }
 
 
 extern "C" __global__ void __closesthit__radiance()
 {
-    const whitted::HitGroupData* hit_group_data = reinterpret_cast<whitted::HitGroupData*>( optixGetSbtDataPointer() );
+    const cubist::HitGroupData* hit_group_data = reinterpret_cast<cubist::HitGroupData*>( optixGetSbtDataPointer() );
     const LocalGeometry          geom           = getLocalGeometry( hit_group_data->geometry_data );
 
     //
@@ -120,7 +120,7 @@ extern "C" __global__ void __closesthit__radiance()
     //
     float3 base_color = make_float3( hit_group_data->material_data.pbr.base_color );
     if( hit_group_data->material_data.pbr.base_color_tex )
-        base_color *= whitted::linearize(
+        base_color *= cubist::linearize(
             make_float3( tex2D<float4>( hit_group_data->material_data.pbr.base_color_tex, geom.UV.x, geom.UV.y ) ) );
 
     float  metallic  = hit_group_data->material_data.pbr.metallic;
@@ -154,9 +154,9 @@ extern "C" __global__ void __closesthit__radiance()
 
     float3 result = make_float3( 0.0f );
 
-    for( int i = 0; i < whitted::params.lights.count; ++i )
+    for( int i = 0; i < cubist::params.lights.count; ++i )
     {
-        Light light = whitted::params.lights[i];
+        Light light = cubist::params.lights[i];
         if( light.type == Light::Type::POINT )
         {
             // TODO: optimize
@@ -173,12 +173,12 @@ extern "C" __global__ void __closesthit__radiance()
             {
                 const float tmin     = 0.001f;           // TODO
                 const float tmax     = L_dist - 0.001f;  // TODO
-                const bool  occluded = whitted::traceOcclusion( whitted::params.handle, geom.P, L, tmin, tmax );
+                const bool  occluded = cubist::traceOcclusion( cubist::params.handle, geom.P, L, tmin, tmax );
                 if( !occluded )
                 {
-                    const float3 F     = whitted::schlick( spec_color, V_dot_H );
-                    const float  G_vis = whitted::vis( N_dot_L, N_dot_V, alpha );
-                    const float  D     = whitted::ggxNormal( N_dot_H, alpha );
+                    const float3 F     = cubist::schlick( spec_color, V_dot_H );
+                    const float  G_vis = cubist::vis( N_dot_L, N_dot_V, alpha );
+                    const float  D     = cubist::ggxNormal( N_dot_H, alpha );
 
                     const float3 diff = ( 1.0f - F ) * diff_color / M_PIf;
                     const float3 spec = F * G_vis * D;
@@ -193,5 +193,5 @@ extern "C" __global__ void __closesthit__radiance()
         }
     }
 
-    whitted::setPayloadResult( result );
+    cubist::setPayloadResult( result );
 }

@@ -34,7 +34,7 @@
 #include "Light.h"
 #include "MaterialData.h"
 
-namespace whitted
+namespace cubist
 {
 
 const unsigned int NUM_PAYLOAD_VALUES = 4u;

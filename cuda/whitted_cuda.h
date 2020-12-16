@@ -32,10 +32,10 @@
 
 #include "whitted.h"
 
-namespace whitted {
+namespace cubist {
 
 extern "C" {
-__constant__ whitted::LaunchParams params;
+__constant__ cubist::LaunchParams params;
 }
 
 //------------------------------------------------------------------------------
@@ -93,7 +93,7 @@ static __forceinline__ __device__ void traceRadiance(
         float3                      ray_direction,
         float                       tmin,
         float                       tmax,
-        whitted::PayloadRadiance*   payload
+        cubist::PayloadRadiance*   payload
         )
 {
     unsigned int u0=0, u1=0, u2=0, u3=0;
@@ -105,9 +105,9 @@ static __forceinline__ __device__ void traceRadiance(
             0.0f,                     // rayTime
             OptixVisibilityMask( 1 ),
             OPTIX_RAY_FLAG_NONE,
-            whitted::RAY_TYPE_RADIANCE,        // SBT offset
-            whitted::RAY_TYPE_COUNT,           // SBT stride
-            whitted::RAY_TYPE_RADIANCE,        // missSBTIndex
+            cubist::RAY_TYPE_RADIANCE,        // SBT offset
+            cubist::RAY_TYPE_COUNT,           // SBT stride
+            cubist::RAY_TYPE_RADIANCE,        // missSBTIndex
             u0, u1, u2, u3 );
 
      payload->result.x = __int_as_float( u0 );
@@ -136,9 +136,9 @@ static __forceinline__ __device__ bool traceOcclusion(
             0.0f,                    // rayTime
             OptixVisibilityMask( 1 ),
             OPTIX_RAY_FLAG_TERMINATE_ON_FIRST_HIT,
-            whitted::RAY_TYPE_OCCLUSION,      // SBT offset
-            whitted::RAY_TYPE_COUNT,          // SBT stride
-            whitted::RAY_TYPE_OCCLUSION,      // missSBTIndex
+            cubist::RAY_TYPE_OCCLUSION,      // SBT offset
+            cubist::RAY_TYPE_COUNT,          // SBT stride
+            cubist::RAY_TYPE_OCCLUSION,      // missSBTIndex
             occluded );
     return occluded;
 }

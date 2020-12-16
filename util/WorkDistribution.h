@@ -51,7 +51,7 @@ public:
     {
         const int tile_strip_width  = TILE_WIDTH*m_num_gpus;
         const int tile_strip_height = TILE_HEIGHT;
-        const int num_tile_strip_cols = m_width /tile_strip_width  + ( m_width %tile_strip_width  == 0 ? 0 : 1 );
+        const int num_tSUTIL_INLINEile_strip_cols = m_width /tile_strip_width  + ( m_width %tile_strip_width  == 0 ? 0 : 1 );
         const int num_tile_strip_rows = m_height/tile_strip_height + ( m_height%tile_strip_height == 0 ? 0 : 1 );
         return num_tile_strip_rows*num_tile_strip_cols*TILE_WIDTH*TILE_HEIGHT;
     }
