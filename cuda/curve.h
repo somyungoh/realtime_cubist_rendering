@@ -28,7 +28,7 @@
 #pragma once
 
 #include <optix.h>
-#include <sutil/vec_math.h>
+#include "../util/vec_math.h"
 #include <vector_types.h>
 
 //

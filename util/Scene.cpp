@@ -30,7 +30,7 @@
 #include <optix_function_table_definition.h>
 #include <optix_stubs.h>
 
-#include <cuda/whitted.h>
+#include "../cuda/whitted.h"
 #include "Exception.h"
 #include "Matrix.h"
 #include "Quaternion.h"

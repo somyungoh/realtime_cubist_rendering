@@ -27,12 +27,12 @@
 //
 #include <optix.h>
 
-#include <cuda/LocalGeometry.h>
-#include <cuda/random.h>
-#include <cuda/whitted.h>
-#include <sutil/vec_math.h>
+#include "LocalGeometry.h"
+#include "random.h"
+#include "whitted.h"
+#include "../util/vec_math.h"
 
-#include <sutil/vec_math.h>
+#include "../util/vec_math.h"
 
 // #include "whitted_cuda.h"
 

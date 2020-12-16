@@ -28,15 +28,15 @@
 
 set(sources
     ${CMAKE_CURRENT_BINARY_DIR}/../sampleConfig.h
-    ${SAMPLES_CUDA_DIR}/sphere.cu
-    ${SAMPLES_CUDA_DIR}/whitted.cu
-    ${SAMPLES_CUDA_DIR}/BufferView.h
-    ${SAMPLES_CUDA_DIR}/GeometryData.h
-    ${SAMPLES_CUDA_DIR}/Light.h
-    ${SAMPLES_CUDA_DIR}/LocalGeometry.h
-    ${SAMPLES_CUDA_DIR}/MaterialData.h
-    ${SAMPLES_CUDA_DIR}/util.h
-    ${SAMPLES_CUDA_DIR}/helpers.h
+    ../cuda/sphere.cu
+    ../cuda/whitted.cu
+    ../cuda/BufferView.h
+    ../cuda/GeometryData.h
+    ../cuda/Light.h
+    ../cuda/LocalGeometry.h
+    ../cuda/MaterialData.h
+    ../cuda/util.h
+    ../cuda/helpers.h
     Aabb.h
     Camera.cpp
     Camera.h

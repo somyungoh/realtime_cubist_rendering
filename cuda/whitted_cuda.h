@@ -28,7 +28,7 @@
 
 #pragma once
 
-#include <sutil/vec_math.h>
+#include "../util/vec_math.h"
 
 #include "whitted.h"
 

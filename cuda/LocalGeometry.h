@@ -29,12 +29,12 @@
 
 #include <optix.h>
 
-#include <sutil/Matrix.h>
-#include <sutil/Preprocessor.h>
-#include <sutil/vec_math.h>
-#include <cuda/BufferView.h>
-#include <cuda/GeometryData.h>
-#include <cuda/util.h>
+#include "../util/Matrix.h"
+#include "../util/Preprocessor.h"
+#include "../util/vec_math.h"
+#include "BufferView.h"
+#include "GeometryData.h"
+#include "util.h"
 
 
 struct LocalGeometry
@@ -50,7 +50,7 @@ struct LocalGeometry
 };
 
 
-SUTIL_HOSTDEVICE LocalGeometry getLocalGeometry( const GeometryData& geometry_data )
+CUBIST_HOSTDEVICE LocalGeometry getLocalGeometry( const GeometryData& geometry_data )
 {
     LocalGeometry lgeom;
     switch( geometry_data.type )

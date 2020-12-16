@@ -27,7 +27,7 @@
 //
 #pragma once
 
-#include <cuda/BufferView.h>
+#include "BufferView.h"
 
 
 struct GeometryData

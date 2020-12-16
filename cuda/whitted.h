@@ -29,10 +29,10 @@
 
 #include <vector_types.h>
 
-#include <cuda/BufferView.h>
-#include <cuda/GeometryData.h>
-#include <cuda/Light.h>
-#include <cuda/MaterialData.h>
+#include "BufferView.h"
+#include "GeometryData.h"
+#include "Light.h"
+#include "MaterialData.h"
 
 namespace whitted
 {
