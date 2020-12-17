@@ -35,8 +35,8 @@
 #include <cstdint>
 #include <string>
 
-#include "sutil.h"
-#include "sutilapi.h"
+#include "util.h"
+#include "utilapi.h"
 
 namespace cubist
 {
@@ -45,7 +45,7 @@ class GLDisplay
 {
 public:
     CUBISTAPI GLDisplay(
-        BufferImageFormat format = sutil::BufferImageFormat::UNSIGNED_BYTE4);
+        BufferImageFormat format = cubist::BufferImageFormat::UNSIGNED_BYTE4);
 
     CUBISTAPI void display(
             const int32_t  screen_res_x,
@@ -60,7 +60,7 @@ private:
     GLint    m_render_tex_uniform_loc = -1;
     GLuint   m_quad_vertex_buffer = 0;
 
-    sutil::BufferImageFormat m_image_format;
+    cubist::BufferImageFormat m_image_format;
 
     static const std::string s_vert_source;
     static const std::string s_frag_source;

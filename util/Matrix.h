@@ -29,7 +29,7 @@
 
 #pragma once
 
-#include "sutilapi.h"
+#include "utilapi.h"
 #include "Preprocessor.h"
 #include "vec_math.h"
 
@@ -811,7 +811,7 @@ namespace cubist
     return Mat;
   }
 
-} // end namespace sutil
+} // end namespace cubist
 
 #undef RT_MATRIX_ACCESS
 #undef RT_MAT_DECL

@@ -28,7 +28,7 @@
 
 #pragma once
 
-#include "sutilapi.h"
+#include "utilapi.h"
 
 namespace cubist
 {
@@ -120,4 +120,4 @@ private:
 
 };
 
-} // namespace sutil
+} // namespace cubist

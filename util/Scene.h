@@ -28,8 +28,8 @@
 
 #pragma once
 
-#include <cuda/BufferView.h>
-#include <cuda/MaterialData.h>
+#include "../cuda/BufferView.h"
+#include "../cuda/MaterialData.h"
 #include "Aabb.h"
 #include "Camera.h"
 #include "Matrix.h"
@@ -146,5 +146,5 @@ private:
 
 CUBISTAPI void loadScene( const std::string& filename, Scene& scene );
 
-} // end namespace sutil
+} // end namespace cubist
 

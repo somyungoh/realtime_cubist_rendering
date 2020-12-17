@@ -31,7 +31,7 @@
 
 #include <iosfwd>
 #include <string>
-#include <sutil.h>
+#include "util.h"
 
 
 //-----------------------------------------------------------------------------

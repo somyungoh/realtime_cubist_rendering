@@ -31,7 +31,7 @@
 #include "Exception.h"
 #include "GLDisplay.h"
 #include "PPMLoader.h"
-#include "sutil.h"
+#include "util.h"
 #include "vec_math.h"
 
 #include <GLFW/glfw3.h>
