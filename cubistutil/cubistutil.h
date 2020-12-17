@@ -36,7 +36,7 @@
 
 #include <vector_types.h>
 
-#include "utilapi.h"
+#include "cubistutilapi.h"
 
 
 struct GLFWwindow;

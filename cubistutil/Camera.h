@@ -28,7 +28,7 @@
 
 #pragma once
 
-#include "utilapi.h"
+#include "cubistutilapi.h"
 #include "vec_math.h"
 
 

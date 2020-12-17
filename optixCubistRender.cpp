@@ -40,15 +40,15 @@
 #include "cuda/whitted.h"
 #include "cuda/Light.h"
 
-#include "util/Camera.h"
-#include "util/Trackball.h"
-#include "util/CUDAOutputBuffer.h"
-#include "util/Exception.h"
-#include "util/GLDisplay.h"
-#include "util/Matrix.h"
-#include "util/Scene.h"
-#include "util/sutil.h"
-#include "util/vec_math.h"
+#include "cubistutil/Camera.h"
+#include "cubistutil/Trackball.h"
+#include "cubistutil/CUDAOutputBuffer.h"
+#include "cubistutil/Exception.h"
+#include "cubistutil/GLDisplay.h"
+#include "cubistutil/Matrix.h"
+#include "cubistutil/Scene.h"
+#include "cubistutil/cubistutil.h"
+#include "cubistutil/vec_math.h"
 
 #include <GLFW/glfw3.h>
 
@@ -68,16 +68,16 @@ bool              minimized     = false;
 
 // Camera state
 bool              camera_changed = true;
-sutil::Camera     camera;
-sutil::Trackball  trackball;
+cubist::Camera     camera;
+cubist::Trackball  trackball;
 
 // Mouse state
 int32_t           mouse_button = -1;
 
 int32_t           samples_per_launch = 16;
 
-whitted::LaunchParams*  d_params = nullptr;
-whitted::LaunchParams   params   = {};
+cubist::LaunchParams*  d_params = nullptr;
+cubist::LaunchParams   params   = {};
 int32_t                 width    = 768;
 int32_t                 height   = 768;
 
@@ -108,13 +108,13 @@ static void cursorPosCallback( GLFWwindow* window, double xpos, double ypos )
 {
     if( mouse_button == GLFW_MOUSE_BUTTON_LEFT )
     {
-        trackball.setViewMode( sutil::Trackball::LookAtFixed );
+        trackball.setViewMode( cubist::Trackball::LookAtFixed );
         trackball.updateTracking( static_cast<int>( xpos ), static_cast<int>( ypos ), width, height );
         camera_changed = true;
     }
     else if( mouse_button == GLFW_MOUSE_BUTTON_RIGHT )
     {
-        trackball.setViewMode( sutil::Trackball::EyeFixed );
+        trackball.setViewMode( cubist::Trackball::EyeFixed );
         trackball.updateTracking( static_cast<int>( xpos ), static_cast<int>( ypos ), width, height );
         camera_changed = true;
     }
@@ -128,7 +128,7 @@ static void windowSizeCallback( GLFWwindow* window, int32_t res_x, int32_t res_y
         return;
 
     // Output dimensions must be at least 1 in both x and y.
-    sutil::ensureMinimumSize( res_x, res_y );
+    cubist::ensureMinimumSize( res_x, res_y );
 
     width   = res_x;
     height  = res_y;
@@ -187,7 +187,7 @@ void printUsageAndExit( const char* argv0 )
 }
 
 
-void initLaunchParams( const sutil::Scene& scene ) {
+void initLaunchParams( const cubist::Scene& scene ) {
     CUDA_CHECK( cudaMalloc(
                 reinterpret_cast<void**>( &params.accum_buffer ),
                 width*height*sizeof(float4)
@@ -198,7 +198,7 @@ void initLaunchParams( const sutil::Scene& scene ) {
 
     const float loffset = scene.aabb().maxExtent();
 
-    // TODO: add light support to sutil::Scene
+    // TODO: add light support to cubist::Scene
     std::vector<Light> lights( 2 );
     lights[0].type            = Light::Type::POINT;
     lights[0].point.color     = {1.0f, 1.0f, 0.8f};
@@ -226,13 +226,13 @@ void initLaunchParams( const sutil::Scene& scene ) {
     params.miss_color   = make_float3( 0.1f );
 
     //CUDA_CHECK( cudaStreamCreate( &stream ) );
-    CUDA_CHECK( cudaMalloc( reinterpret_cast<void**>( &d_params ), sizeof( whitted::LaunchParams ) ) );
+    CUDA_CHECK( cudaMalloc( reinterpret_cast<void**>( &d_params ), sizeof( cubist::LaunchParams ) ) );
 
     params.handle = scene.traversableHandle();
 }
 
 
-void handleCameraUpdate( whitted::LaunchParams& params )
+void handleCameraUpdate( cubist::LaunchParams& params )
 {
     if( !camera_changed )
         return;
@@ -252,7 +252,7 @@ void handleCameraUpdate( whitted::LaunchParams& params )
 }
 
 
-void handleResize( sutil::CUDAOutputBuffer<uchar4>& output_buffer )
+void handleResize( cubist::CUDAOutputBuffer<uchar4>& output_buffer )
 {
     if( !resize_dirty )
         return;
@@ -269,7 +269,7 @@ void handleResize( sutil::CUDAOutputBuffer<uchar4>& output_buffer )
 }
 
 
-void updateState( sutil::CUDAOutputBuffer<uchar4>& output_buffer, whitted::LaunchParams& params )
+void updateState( cubist::CUDAOutputBuffer<uchar4>& output_buffer, cubist::LaunchParams& params )
 {
     // Update params on device
     if( camera_changed || resize_dirty )
@@ -280,7 +280,7 @@ void updateState( sutil::CUDAOutputBuffer<uchar4>& output_buffer, whitted::Launc
 }
 
 
-void launchSubframe( sutil::CUDAOutputBuffer<uchar4>& output_buffer, const sutil::Scene& scene )
+void launchSubframe( cubist::CUDAOutputBuffer<uchar4>& output_buffer, const cubist::Scene& scene )
 {
 
     // Launch
@@ -288,7 +288,7 @@ void launchSubframe( sutil::CUDAOutputBuffer<uchar4>& output_buffer, const sutil
     params.frame_buffer        = result_buffer_data;
     CUDA_CHECK( cudaMemcpyAsync( reinterpret_cast<void*>( d_params ),
                 &params,
-                sizeof( whitted::LaunchParams ),
+                sizeof( cubist::LaunchParams ),
                 cudaMemcpyHostToDevice,
                 0 // stream
                 ) );
@@ -297,7 +297,7 @@ void launchSubframe( sutil::CUDAOutputBuffer<uchar4>& output_buffer, const sutil
                 scene.pipeline(),
                 0,             // stream
                 reinterpret_cast<CUdeviceptr>( d_params ),
-                sizeof( whitted::LaunchParams ),
+                sizeof( cubist::LaunchParams ),
                 scene.sbt(),
                 width,  // launch width
                 height, // launch height
@@ -309,8 +309,8 @@ void launchSubframe( sutil::CUDAOutputBuffer<uchar4>& output_buffer, const sutil
 
 
 void displaySubframe(
-        sutil::CUDAOutputBuffer<uchar4>&  output_buffer,
-        sutil::GLDisplay&                 gl_display,
+        cubist::CUDAOutputBuffer<uchar4>&  output_buffer,
+        cubist::GLDisplay&                 gl_display,
         GLFWwindow*                       window )
 {
     // Display
@@ -327,7 +327,7 @@ void displaySubframe(
 }
 
 
-void initCameraState( const sutil::Scene& scene )
+void initCameraState( const cubist::Scene& scene )
 {
     camera = scene.camera();
     camera_changed = true;
@@ -355,13 +355,13 @@ void cleanup()
 
 int main( int argc, char* argv[] )
 {
-    sutil::CUDAOutputBufferType output_buffer_type = sutil::CUDAOutputBufferType::GL_INTEROP;
+    cubist::CUDAOutputBufferType output_buffer_type = cubist::CUDAOutputBufferType::GL_INTEROP;
 
     //
     // Parse command line options
     //
     std::string outfile;
-    std::string infile = sutil::sampleDataFilePath( "WaterBottle/WaterBottle.gltf" );
+    std::string infile = cubist::sampleDataFilePath( "WaterBottle/WaterBottle.gltf" );
 
     for( int i = 1; i < argc; ++i )
     {
@@ -372,7 +372,7 @@ int main( int argc, char* argv[] )
         }
         else if( arg == "--no-gl-interop" )
         {
-            output_buffer_type = sutil::CUDAOutputBufferType::CUDA_DEVICE;
+            output_buffer_type = cubist::CUDAOutputBufferType::CUDA_DEVICE;
         }
         else if( arg == "--model" )
         {
@@ -389,7 +389,7 @@ int main( int argc, char* argv[] )
         else if( arg.substr( 0, 6 ) == "--dim=" )
         {
             const std::string dims_arg = arg.substr( 6 );
-            sutil::parseDimensions( dims_arg.c_str(), width, height );
+            cubist::parseDimensions( dims_arg.c_str(), width, height );
         }
         else if( arg == "--launch-samples" || arg == "-s" )
         {
@@ -413,8 +413,8 @@ int main( int argc, char* argv[] )
 
     try
     {
-        sutil::Scene scene;
-        sutil::loadScene( infile.c_str(), scene );
+        cubist::Scene scene;
+        cubist::loadScene( infile.c_str(), scene );
         scene.finalize();
 
         OPTIX_CHECK( optixInit() ); // Need to initialize function table
@@ -424,7 +424,7 @@ int main( int argc, char* argv[] )
 
         if( outfile.empty() )
         {
-            GLFWwindow* window = sutil::initUI( "optixMeshViewer", width, height );
+            GLFWwindow* window = cubist::initUI( "optixMeshViewer", width, height );
             glfwSetMouseButtonCallback  ( window, mouseButtonCallback   );
             glfwSetCursorPosCallback    ( window, cursorPosCallback     );
             glfwSetWindowSizeCallback   ( window, windowSizeCallback    );
@@ -437,8 +437,8 @@ int main( int argc, char* argv[] )
             // Render loop
             //
             {
-                sutil::CUDAOutputBuffer<uchar4> output_buffer( output_buffer_type, width, height );
-                sutil::GLDisplay gl_display;
+                cubist::CUDAOutputBuffer<uchar4> output_buffer( output_buffer_type, width, height );
+                cubist::GLDisplay gl_display;
 
                 std::chrono::duration<double> state_update_time( 0.0 );
                 std::chrono::duration<double> render_time( 0.0 );
@@ -463,7 +463,7 @@ int main( int argc, char* argv[] )
                     t1 = std::chrono::steady_clock::now();
                     display_time += t1 - t0;
 
-                    sutil::displayStats( state_update_time, render_time, display_time );
+                    cubist::displayStats( state_update_time, render_time, display_time );
 
                     glfwSwapBuffers(window);
 
@@ -473,30 +473,30 @@ int main( int argc, char* argv[] )
                 CUDA_SYNC_CHECK();
             }
 
-            sutil::cleanupUI( window );
+            cubist::cleanupUI( window );
         }
         else
         {
-			if( output_buffer_type == sutil::CUDAOutputBufferType::GL_INTEROP )
+			if( output_buffer_type == cubist::CUDAOutputBufferType::GL_INTEROP )
 			{
-				sutil::initGLFW(); // For GL context
-				sutil::initGL();
+				cubist::initGLFW(); // For GL context
+				cubist::initGL();
 			}
 
-			sutil::CUDAOutputBuffer<uchar4> output_buffer(output_buffer_type, width, height);
+			cubist::CUDAOutputBuffer<uchar4> output_buffer(output_buffer_type, width, height);
 			handleCameraUpdate( params);
 			handleResize( output_buffer );
 			launchSubframe( output_buffer, scene );
 
-			sutil::ImageBuffer buffer;
+			cubist::ImageBuffer buffer;
 			buffer.data = output_buffer.getHostPointer();
 			buffer.width = output_buffer.width();
 			buffer.height = output_buffer.height();
-			buffer.pixel_format = sutil::BufferImageFormat::UNSIGNED_BYTE4;
+			buffer.pixel_format = cubist::BufferImageFormat::UNSIGNED_BYTE4;
 
-			sutil::saveImage(outfile.c_str(), buffer, false);
+			cubist::saveImage(outfile.c_str(), buffer, false);
 
-            if( output_buffer_type == sutil::CUDAOutputBufferType::GL_INTEROP )
+            if( output_buffer_type == cubist::CUDAOutputBufferType::GL_INTEROP )
             {
                 glfwTerminate();
             }

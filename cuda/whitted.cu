@@ -30,7 +30,7 @@
 #include "LocalGeometry.h"
 #include "helpers.h"
 #include <random.h>
-#include "../util/vec_math.h"
+#include "../cubistutil/vec_math.h"
 
 #include "whitted_cuda.h"
 

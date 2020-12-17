@@ -34,7 +34,7 @@
 #include "Camera.h"
 #include "Matrix.h"
 #include "Preprocessor.h"
-#include "CUBISTAPI.h
+#include "cubistutilapi.h"
 
 #include <cuda_runtime.h>
 
@@ -110,7 +110,7 @@ public:
 
     CUBISTAPI void createContext();
     CUBISTAPI void buildMeshAccels( uint32_t triangle_input_flags = OPTIX_GEOMETRY_FLAG_DISABLE_ANYHIT );
-    CUBISTAPI void buildInstanceAccel( int rayTypeCount = whitted::RAY_TYPE_COUNT );
+    CUBISTAPI void buildInstanceAccel( int rayTypeCount = cubist::RAY_TYPE_COUNT );
 
 private:
     void createPTXModule();

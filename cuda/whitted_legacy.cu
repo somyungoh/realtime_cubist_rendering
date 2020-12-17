@@ -30,9 +30,9 @@
 #include "LocalGeometry.h"
 #include "random.h"
 #include "whitted.h"
-#include "../util/vec_math.h"
+#include "../cubistutil/vec_math.h"
 
-#include "../util/vec_math.h"
+#include "../cubistutil/vec_math.h"
 
 // #include "whitted_cuda.h"
 

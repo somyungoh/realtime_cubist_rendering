@@ -35,3 +35,5 @@ OPTIX_add_sample_executable( optixCubistRender target_name
 target_link_libraries( ${target_name}
   ${CUDA_LIBRARIES}
   )
+
+# add_subdirectory(cubistutil)

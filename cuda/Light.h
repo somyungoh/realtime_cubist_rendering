@@ -26,7 +26,7 @@
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 //
 #pragma once
-#include "../util/Preprocessor.h"
+#include "../cubistutil/Preprocessor.h"
 
 struct Light
 {

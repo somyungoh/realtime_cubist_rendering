@@ -29,7 +29,7 @@
 
 #pragma once
 
-#include "utilapi.h"
+#include "cubistutilapi.h"
 #include "Preprocessor.h"
 #include "vec_math.h"
 

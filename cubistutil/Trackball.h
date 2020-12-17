@@ -28,7 +28,7 @@
 
 #pragma once
 
-#include "utilapi.h"
+#include "cubistutil.h"
 
 namespace cubist
 {

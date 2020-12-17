@@ -29,9 +29,9 @@
 
 #include <optix.h>
 
-#include "../util/Matrix.h"
-#include "../util/Preprocessor.h"
-#include "../util/vec_math.h"
+#include "../cubistutil/Matrix.h"
+#include "../cubistutil/Preprocessor.h"
+#include "../cubistutil/vec_math.h"
 #include "BufferView.h"
 #include "GeometryData.h"
 #include "util.h"
