@@ -36,7 +36,7 @@
 #include "Quaternion.h"
 #include "Record.h"
 #include "Scene.h"
-#include "util.h"
+#include "cubistutil.h"
 
 #define TINYGLTF_IMPLEMENTATION
 //#define STB_IMAGE_IMPLEMENTATION        // Implementation in sutil.cpp

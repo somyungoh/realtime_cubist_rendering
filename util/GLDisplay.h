@@ -35,8 +35,8 @@
 #include <cstdint>
 #include <string>
 
-#include "util.h"
-#include "utilapi.h"
+#include "cubistutil.h"
+#include "cubistutilapi.h"
 
 namespace cubist
 {

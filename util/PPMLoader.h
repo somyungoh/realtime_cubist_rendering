@@ -31,7 +31,7 @@
 
 #include <iosfwd>
 #include <string>
-#include "util.h"
+#include "cubisttil.h"
 
 
 //-----------------------------------------------------------------------------

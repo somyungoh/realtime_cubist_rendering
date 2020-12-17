@@ -35,7 +35,7 @@ set(sources
     ../cuda/Light.h
     ../cuda/LocalGeometry.h
     ../cuda/MaterialData.h
-    ../cuda/util.h
+    ../cuda/cubistutil.h
     ../cuda/helpers.h
     Aabb.h
     Camera.cpp
@@ -52,9 +52,9 @@ set(sources
     Record.h
     Scene.cpp
     Scene.h
-    sutilapi.h
-    sutil.cpp
-    sutil.h
+    cubistutilapi.h
+    cubistutil.cpp
+    cubistutil.h
     Trackball.cpp
     Trackball.h
     vec_math.h
@@ -69,13 +69,13 @@ if(NOT CUDA_NVRTC_ENABLED)
 endif()
 
 # Make the library.
-set(sutil_target "sutil_7_sdk")
-add_library(${sutil_target} ${sources})
+set(cubist_util_target "cubist_util_sdk")
+add_library(${cubist_util_target} ${sources})
 if( WIN32 )
-  target_compile_definitions( ${sutil_target} PUBLIC GLAD_GLAPI_EXPORT )
+  target_compile_definitions( ${cubist_util_target} PUBLIC GLAD_GLAPI_EXPORT )
 endif()
 
-target_link_libraries(${sutil_target} LINK_PRIVATE
+target_link_libraries(${cubist_util_target} LINK_PRIVATE
   ${GLFW_LIB_NAME}
   glad
   imgui
@@ -85,34 +85,34 @@ target_link_libraries(${sutil_target} LINK_PRIVATE
 # Use gcc rather than g++ to link if we are linking statically against libgcc_s and libstdc++
 if(USING_GNU_C OR USING_GNU_CXX)
   if(GCC_LIBSTDCPP_HACK)
-    set_target_properties(${sutil_target} PROPERTIES LINKER_LANGUAGE "C")
-    target_link_libraries(${sutil_target} LINK_PRIVATE ${STATIC_LIBSTDCPP})
+    set_target_properties(${cubist_util_target} PROPERTIES LINKER_LANGUAGE "C")
+    target_link_libraries(${cubist_util_target} LINK_PRIVATE ${STATIC_LIBSTDCPP})
   endif()
 endif()
 
 
 if(CUDA_NVRTC_ENABLED)
-  target_link_libraries(${sutil_target} LINK_PRIVATE ${CUDA_nvrtc_LIBRARY})
+  target_link_libraries(${cubist_util_target} LINK_PRIVATE ${CUDA_nvrtc_LIBRARY})
 endif()
 if(WIN32)
-  target_link_libraries(${sutil_target} LINK_PRIVATE winmm.lib)
+  target_link_libraries(${cubist_util_target} LINK_PRIVATE winmm.lib)
 endif()
 
 # Make the list of sources available to the parent directory for installation needs.
-set(sutil_sources "${sources}" PARENT_SCOPE)
+set(cubist_util_sources "${sources}" PARENT_SCOPE)
 
-set_property(TARGET ${sutil_target} PROPERTY FOLDER "${OPTIX_IDE_FOLDER}")
+set_property(TARGET ${cubist_util_target} PROPERTY FOLDER "${OPTIX_IDE_FOLDER}")
 
 # Disable until we get binary samples
 if(0 AND RELEASE_INSTALL_BINARY_SAMPLES AND NOT RELEASE_STATIC_BUILD)
   # If performing a release install, we want to use rpath for our install name.
   # The executables' rpaths will then be set to @executable_path so we can invoke
   # the samples from an arbitrary location and it will still find this library.
-  set_target_properties(${sutil_target} PROPERTIES
+  set_target_properties(${cubist_util_target} PROPERTIES
     INSTALL_NAME_DIR "@rpath"
     BUILD_WITH_INSTALL_RPATH ON
     )
-  install(TARGETS ${sutil_target}
+  install(TARGETS ${cubist_util_target}
     RUNTIME DESTINATION ${SDK_BINARY_INSTALL_DIR}
     LIBRARY DESTINATION ${SDK_BINARY_INSTALL_DIR}
     )

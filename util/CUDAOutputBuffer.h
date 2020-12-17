@@ -37,7 +37,7 @@
 #include <iostream>
 #include <vector>
 
-#include "util.h"
+#include "cubistutil.h"
 
 namespace cubist
 {
