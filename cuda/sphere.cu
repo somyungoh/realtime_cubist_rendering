@@ -28,7 +28,7 @@
 
 #include <optix.h>
 
-#include "../util/vec_math.h"
+#include "../cubistutil/vec_math.h"
 
 #include "sphere.h"
 

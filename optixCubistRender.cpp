@@ -32,8 +32,12 @@
 #include <cuda_gl_interop.h>
 
 #include <optix.h>
-#include <optix_function_table_definition.h>
 #include <optix_stubs.h>
+
+// NOTE(David): This was used in the original code, however, including it
+//              will cause a "double definition" as we now build our own
+//              cubistutil(copied from sutil) which defines this as well.
+// #include <optix_function_table_definition.h>     
 
 #include <sampleConfig.h>
 

@@ -26,50 +26,34 @@
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 //
 
-
 #pragma once
 
-#include <iosfwd>
-#include <string>
-#include "cubistutil.h"
+#define SAMPLES_DIR "/home/david/NVIDIA-OptiX-SDK-7.2.0-linux64-x86_64/SDK"
+#define SAMPLES_PTX_DIR "/home/david/NVIDIA-OptiX-SDK-7.2.0-linux64-x86_64/SDK/build/lib/ptx"
+#define SAMPLES_CUDA_DIR "/home/david/NVIDIA-OptiX-SDK-7.2.0-linux64-x86_64/SDK/cuda"
 
+// Include directories
+#define SAMPLES_RELATIVE_INCLUDE_DIRS \
+  "cuda", \
+  "sutil", \
+  "lib/optixPaging/include", \
+  "lib/DemandLoading/include", \
+  ".", 
+#define SAMPLES_ABSOLUTE_INCLUDE_DIRS \
+  "/home/david/NVIDIA-OptiX-SDK-7.2.0-linux64-x86_64/include", \
+  "/usr/local/cuda/include", 
 
-//-----------------------------------------------------------------------------
-//
-// Utility functions
-//
-//-----------------------------------------------------------------------------
+// Signal whether to use NVRTC or not
+#define CUDA_NVRTC_ENABLED 1
 
-// Creates a TextureSampler object for the given PPM file.  If filename is
-// empty or PPMLoader fails, a 1x1 texture is created with the provided default
-// texture color.
-CUBISTAPI cubist::Texture loadPPMTexture( const std::string& ppm_filename, const float3& default_color, cudaTextureDesc* tex_desc );
-
-//-----------------------------------------------------------------------------
-//
-// PPMLoader class declaration
-//
-//-----------------------------------------------------------------------------
-
-class PPMLoader
-{
-  public:
-    CUBISTAPI PPMLoader( const std::string& filename, const bool vflip = false );
-    CUBISTAPI ~PPMLoader();
-
-    CUBISTAPI cubist::Texture loadTexture( const float3& default_color, cudaTextureDesc* tex_desc );
-
-    CUBISTAPI bool           failed() const;
-    CUBISTAPI unsigned int   width() const;
-    CUBISTAPI unsigned int   height() const;
-    CUBISTAPI unsigned char* raster() const;
-
-  private:
-    unsigned int   m_nx;
-    unsigned int   m_ny;
-    unsigned int   m_max_val;
-    unsigned char* m_raster;
-    bool           m_is_ascii;
-
-    static void getLine( std::ifstream& file_in, std::string& s );
-};
+// NVRTC compiler options
+#define CUDA_NVRTC_OPTIONS  \
+  "-std=c++11", \
+  "-arch", \
+  "compute_60", \
+  "-use_fast_math", \
+  "-lineinfo", \
+  "-default-device", \
+  "-rdc", \
+  "true", \
+  "-D__x86_64",
