@@ -39,9 +39,9 @@
 //              cubistutil(copied from sutil) which defines this as well.
 // #include <optix_function_table_definition.h>     
 
-#include <sampleConfig.h>
+// #include <sampleConfig.h>
 
-#include "cuda/whitted.h"
+#include "cuda/cubist.h"
 #include "cuda/Light.h"
 
 #include "cubistutil/Camera.h"
@@ -82,8 +82,8 @@ int32_t           samples_per_launch = 16;
 
 cubist::LaunchParams*  d_params = nullptr;
 cubist::LaunchParams   params   = {};
-int32_t                 width    = 768;
-int32_t                 height   = 768;
+int32_t                width    = 768;
+int32_t                height   = 768;
 
 //------------------------------------------------------------------------------
 //
@@ -233,6 +233,11 @@ void initLaunchParams( const cubist::Scene& scene ) {
     CUDA_CHECK( cudaMalloc( reinterpret_cast<void**>( &d_params ), sizeof( cubist::LaunchParams ) ) );
 
     params.handle = scene.traversableHandle();
+
+    // edge thredshold for dot(ray_dir * N)
+    params.cubistEnabled    = true;
+    params.edge_threshold   = 0.01;
+    params.debug_color      = make_float3( 0.9, 0.2, 0.2 );
 }
 
 
@@ -365,8 +370,8 @@ int main( int argc, char* argv[] )
     // Parse command line options
     //
     std::string outfile;
-    std::string infile = cubist::sampleDataFilePath( "WaterBottle/WaterBottle.gltf" );
-
+    std::string infile = cubist::sampleDataFilePath( "GLTF/Helmet/DamagedHelmet.gltf" );
+    
     for( int i = 1; i < argc; ++i )
     {
         const std::string arg = argv[i];

@@ -30,7 +30,7 @@
 
 #include "../cubistutil/vec_math.h"
 
-#include "whitted.h"
+#include "cubist.h"
 
 namespace cubist {
 
@@ -157,4 +157,4 @@ __forceinline__ __device__ void setPayloadOcclusion( bool occluded )
     optixSetPayload_0( static_cast<unsigned int>( occluded ) );
 }
 
-} // namespace whitted
+} // namespace cubist

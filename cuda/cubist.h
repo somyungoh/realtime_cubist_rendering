@@ -72,7 +72,12 @@ struct LaunchParams
     BufferView<Light>        lights;
     float3                   miss_color;
     OptixTraversableHandle   handle;
-    cudaTextureObject_t      env_texture;   
+    cudaTextureObject_t      env_texture;
+
+    // cubist rendering specific
+    bool                     cubistEnabled;
+    float                    edge_threshold;
+    float3                   debug_color;
 };
 
 

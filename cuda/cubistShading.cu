@@ -32,7 +32,7 @@
 #include <random.h>
 #include "../cubistutil/vec_math.h"
 
-#include "whitted_cuda.h"
+#include "cubistShading.h"
 
 //------------------------------------------------------------------------------
 //
@@ -183,7 +183,15 @@ extern "C" __global__ void __closesthit__radiance()
                     const float3 diff = ( 1.0f - F ) * diff_color / M_PIf;
                     const float3 spec = F * G_vis * D;
 
-                    result += light.point.color * light.point.intensity * N_dot_L * ( diff + spec );
+                    
+                    // CUBIST: color edge by thredshold
+                    if( cubist::params.cubistEnabled ) {
+                        if ( N_dot_V < cubist::params.edge_threshold ) {
+                            result = cubist::params.debug_color;    
+                        }
+                    }
+                    else 
+                        result += light.point.color * light.point.intensity * N_dot_L * ( diff + spec );
                 }
             }
         }
