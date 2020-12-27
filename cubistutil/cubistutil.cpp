@@ -161,12 +161,12 @@ static std::string existingFilePath( const char* directory, const char* relative
 
 std::string getSampleDir()
 {
+    char cubist_root[255];
+    sprintf(cubist_root, "%s/optixCubistRender", SAMPLES_DIR);
+
     static const char* directories[] =
     {
-        // TODO: Remove the environment variable OPTIX_EXP_SAMPLES_SDK_DIR once SDK 6/7 packages are split
-        getenv( "OPTIX_EXP_SAMPLES_SDK_DIR" ),
-        getenv( "OPTIX_SAMPLES_SDK_DIR" ),
-        SAMPLES_DIR,
+        cubist_root,
         "."
     };
     for( const char* directory : directories )
@@ -175,20 +175,20 @@ std::string getSampleDir()
             return directory;
     }
 
-    throw Exception( "cubist::getSampleDir couldn't locate an existing sample directory" );
+    throw Exception( "cubist::getSampleDir couldn't locate cuda directory" );
 }
 
 const char* sampleFilePath( const char* relativeSubDir, const char* relativePath )
 {
     static std::string s;
 
+    char cubist_root[255];
+    sprintf(cubist_root, "%s/optixCubistRender", SAMPLES_DIR);
+
     // Allow for overrides.
     static const char* directories[] =
     {
-        // TODO: Remove the environment variable OPTIX_EXP_SAMPLES_SDK_DIR once SDK 6/7 packages are split
-        getenv( "OPTIX_EXP_SAMPLES_SDK_DIR" ),
-        getenv( "OPTIX_SAMPLES_SDK_DIR" ),
-        SAMPLES_DIR,
+        cubist_root,
         "."
     };
     for( const char* directory : directories )
@@ -202,6 +202,9 @@ const char* sampleFilePath( const char* relativeSubDir, const char* relativePath
             }
         }
     }
+
+    std::cout << ":::::DEBUG:::: CUBIST_SOURCE_DIR = " << getenv( "CUBIST_SOURCE_DIR" ) << std::endl;
+
     throw Exception( ( std::string{ "cubist::sampleDataFilePath couldn't locate " } +relativePath ).c_str() );
 }
 
