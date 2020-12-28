@@ -151,15 +151,18 @@ static void keyCallback( GLFWwindow* window, int32_t key, int32_t /*scancode*/, 
 {
     if( action == GLFW_PRESS )
     {
-        if( key == GLFW_KEY_Q ||
-            key == GLFW_KEY_ESCAPE )
-        {
+        switch (key) {
+        case GLFW_KEY_C:
+            params.fCubistEnabled = !params.fCubistEnabled;
+            break;
+        case GLFW_KEY_E:
+            params.fEdgeEnabled = !params.fEdgeEnabled;
+            break;
+        case GLFW_KEY_Q:
+        case GLFW_KEY_ESCAPE:
             glfwSetWindowShouldClose( window, true );
+            break;
         }
-    }
-    else if( key == GLFW_KEY_G )
-    {
-        // toggle UI draw
     }
 }
 
@@ -235,9 +238,11 @@ void initLaunchParams( const cubist::Scene& scene ) {
     params.handle = scene.traversableHandle();
 
     // edge thredshold for dot(ray_dir * N)
-    params.cubistEnabled    = true;
-    params.edge_threshold   = 0.01;
-    params.debug_color      = make_float3( 0.9, 0.2, 0.2 );
+    params.fCubistEnabled   = false;
+    params.fEdgeEnabled     = true;
+    params.edge_threshold   = 0.5;
+    params.debug_color_a    = make_float3( 0.9, 0.2, 0.2 );
+    params.debug_color_b    = make_float3( 0.03, 0.05, 0.5 );
 }
 
 
@@ -362,6 +367,18 @@ void cleanup()
 //
 //------------------------------------------------------------------------------
 
+void print_usage () 
+{
+    printf("::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::\n\n");
+    printf("               << real-time cubist renderer >>                  \n");
+    printf("  Usage:                                                        \n");
+    printf("  c) toogle entire cubist-rendering                             \n");
+    printf("  e) toogle edge detection                                      \n");
+    printf("                                                                \n");
+    printf("::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::\n");
+
+}
+
 int main( int argc, char* argv[] )
 {
     cubist::CUDAOutputBufferType output_buffer_type = cubist::CUDAOutputBufferType::GL_INTEROP;
@@ -430,6 +447,7 @@ int main( int argc, char* argv[] )
         initCameraState( scene );
         initLaunchParams( scene );
 
+        print_usage();
 
         if( outfile.empty() )
         {

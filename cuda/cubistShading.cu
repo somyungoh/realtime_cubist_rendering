@@ -29,7 +29,7 @@
 
 #include "LocalGeometry.h"
 #include "helpers.h"
-#include <random.h>
+#include "random.h"
 #include "../cubistutil/vec_math.h"
 
 #include "cubistShading.h"
@@ -140,6 +140,26 @@ extern "C" __global__ void __closesthit__radiance()
     const float3 spec_color = lerp( make_float3( F0 ), base_color, metallic );
     const float  alpha      = roughness * roughness;
 
+
+    // CUBIST: color edge by thredshold
+    if( cubist::params.fCubistEnabled && cubist::params.fEdgeEnabled) {
+        
+        float3 result = make_float3( 0.0f );
+
+        const float3 V       = -normalize( optixGetWorldRayDirection() );
+        const float3 N       = geom.N;
+        const float  N_dot_V = dot( N, V );
+
+        if ( N_dot_V < cubist::params.edge_threshold )
+            result = cubist::params.debug_color_a;    
+        else 
+            result = cubist::params.debug_color_b;
+        
+        cubist::setPayloadResult( result );
+        return;   
+    }
+
+
     //
     // compute direct lighting
     //
@@ -182,16 +202,8 @@ extern "C" __global__ void __closesthit__radiance()
 
                     const float3 diff = ( 1.0f - F ) * diff_color / M_PIf;
                     const float3 spec = F * G_vis * D;
-
                     
-                    // CUBIST: color edge by thredshold
-                    if( cubist::params.cubistEnabled ) {
-                        if ( N_dot_V < cubist::params.edge_threshold ) {
-                            result = cubist::params.debug_color;    
-                        }
-                    }
-                    else 
-                        result += light.point.color * light.point.intensity * N_dot_L * ( diff + spec );
+                    result += light.point.color * light.point.intensity * N_dot_L * ( diff + spec );
                 }
             }
         }

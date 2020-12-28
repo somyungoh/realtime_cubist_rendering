@@ -74,10 +74,14 @@ struct LaunchParams
     OptixTraversableHandle   handle;
     cudaTextureObject_t      env_texture;
 
-    // cubist rendering specific
-    bool                     cubistEnabled;
-    float                    edge_threshold;
-    float3                   debug_color;
+    // ::::: cubist rendering specific ::::: //
+    // flags
+    bool      fCubistEnabled;
+    bool      fEdgeEnabled;
+    
+    float     edge_threshold;
+    float3    debug_color_a;
+    float3    debug_color_b;
 };
 
 

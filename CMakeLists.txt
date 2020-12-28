@@ -60,7 +60,7 @@ OPTIX_add_sample_executable( optixCubistRender target_name
 
   OPTIONS -rdc true
   )
-  
+
 # link external libraries
 target_link_libraries( ${target_name}
 
