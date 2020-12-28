@@ -87,6 +87,24 @@ extern "C" __global__ void __raygen__pinhole()
     const unsigned int image_index = launch_idx.y * launch_dims.x + launch_idx.x;
     float3             accum_color = payload.result;
 
+
+    // CUBIST: the ULTIMATE cubist pass XD
+    if( cubist::params.fCubistEnabled && cubist::params.fCubistPassEnabled) {
+
+        float3   new_raydir = normalize (ray_direction + accum_color * 0.2);
+    
+        traceRadiance (
+            cubist::params.handle,
+            ray_origin,
+            new_raydir,
+            0.01f,  // tmin
+            1e16f,  // tmax
+            &payload );
+        
+        accum_color = payload.result;
+
+    }
+
     if( subframe_index > 0 )
     {
         const float  a                = 1.0f / static_cast<float>( subframe_index + 1 );

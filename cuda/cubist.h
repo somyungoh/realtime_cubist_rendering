@@ -76,12 +76,13 @@ struct LaunchParams
 
     // ::::: cubist rendering specific ::::: //
     // flags
-    bool      fCubistEnabled;
-    bool      fEdgeEnabled;
+    bool        fCubistEnabled;
+    bool        fEdgeEnabled;
+    bool        fCubistPassEnabled;
     
-    float     edge_threshold;
-    float3    debug_color_a;
-    float3    debug_color_b;
+    float       edge_threshold;
+    float3      debug_color_a;
+    float3      debug_color_b;
 };
 
 
