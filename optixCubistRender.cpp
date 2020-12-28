@@ -39,9 +39,9 @@
 //              cubistutil(copied from sutil) which defines this as well.
 // #include <optix_function_table_definition.h>     
 
-#include <sampleConfig.h>
+// #include <sampleConfig.h>
 
-#include "cuda/whitted.h"
+#include "cuda/cubist.h"
 #include "cuda/Light.h"
 
 #include "cubistutil/Camera.h"
@@ -82,8 +82,8 @@ int32_t           samples_per_launch = 16;
 
 cubist::LaunchParams*  d_params = nullptr;
 cubist::LaunchParams   params   = {};
-int32_t                 width    = 768;
-int32_t                 height   = 768;
+int32_t                width    = 768;
+int32_t                height   = 768;
 
 //------------------------------------------------------------------------------
 //
@@ -151,15 +151,21 @@ static void keyCallback( GLFWwindow* window, int32_t key, int32_t /*scancode*/, 
 {
     if( action == GLFW_PRESS )
     {
-        if( key == GLFW_KEY_Q ||
-            key == GLFW_KEY_ESCAPE )
-        {
+        switch (key) {
+        case GLFW_KEY_C:
+            params.fCubistEnabled = !params.fCubistEnabled;
+            break;
+        case GLFW_KEY_E:
+            params.fEdgeEnabled = !params.fEdgeEnabled;
+            break;
+        case GLFW_KEY_Z:
+            params.fCubistPassEnabled = !params.fCubistPassEnabled;
+            break;
+        case GLFW_KEY_Q:
+        case GLFW_KEY_ESCAPE:
             glfwSetWindowShouldClose( window, true );
+            break;
         }
-    }
-    else if( key == GLFW_KEY_G )
-    {
-        // toggle UI draw
     }
 }
 
@@ -233,6 +239,14 @@ void initLaunchParams( const cubist::Scene& scene ) {
     CUDA_CHECK( cudaMalloc( reinterpret_cast<void**>( &d_params ), sizeof( cubist::LaunchParams ) ) );
 
     params.handle = scene.traversableHandle();
+
+    // edge thredshold for dot(ray_dir * N)
+    params.fCubistEnabled       = false;
+    params.fEdgeEnabled         = false;
+    params.fCubistPassEnabled   = false;
+    params.edge_threshold       = 0.5;
+    params.debug_color_a        = make_float3( 0.9, 0.2, 0.2 );
+    params.debug_color_b        = make_float3( 0.03, 0.05, 0.5 );
 }
 
 
@@ -357,6 +371,19 @@ void cleanup()
 //
 //------------------------------------------------------------------------------
 
+void print_usage () 
+{
+    printf("::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::\n\n");
+    printf("               << real-time cubist renderer >>                  \n");
+    printf("  Usage:                                                        \n");
+    printf("  c) toogle entire cubist-rendering                             \n");
+    printf("  e) toogle edge detection                                      \n");
+    printf("  z) toogle cubist pass                                         \n");
+    printf("                                                                \n");
+    printf("::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::\n");
+
+}
+
 int main( int argc, char* argv[] )
 {
     cubist::CUDAOutputBufferType output_buffer_type = cubist::CUDAOutputBufferType::GL_INTEROP;
@@ -365,8 +392,8 @@ int main( int argc, char* argv[] )
     // Parse command line options
     //
     std::string outfile;
-    std::string infile = cubist::sampleDataFilePath( "WaterBottle/WaterBottle.gltf" );
-
+    std::string infile = cubist::sampleDataFilePath( "GLTF/Helmet/DamagedHelmet.gltf" );
+    
     for( int i = 1; i < argc; ++i )
     {
         const std::string arg = argv[i];
@@ -425,6 +452,7 @@ int main( int argc, char* argv[] )
         initCameraState( scene );
         initLaunchParams( scene );
 
+        print_usage();
 
         if( outfile.empty() )
         {

@@ -30,7 +30,7 @@
 #include <optix_function_table_definition.h>
 #include <optix_stubs.h>
 
-#include "../cuda/whitted.h"
+#include "../cuda/cubist.h"
 #include "Exception.h"
 #include "Matrix.h"
 #include "Quaternion.h"
@@ -1163,7 +1163,7 @@ void Scene::createPTXModule()
     m_pipeline_compile_options.exceptionFlags            = OPTIX_EXCEPTION_FLAG_NONE; // should be OPTIX_EXCEPTION_FLAG_STACK_OVERFLOW;
     m_pipeline_compile_options.pipelineLaunchParamsVariableName = "params";
 
-    const std::string ptx = getPtxString( nullptr, nullptr, "whitted.cu" );
+    const std::string ptx = getPtxString( nullptr, nullptr, "cubistShading.cu" );
 
     m_ptx_module  = {};
     char log[2048];

@@ -29,10 +29,10 @@
 
 #include "LocalGeometry.h"
 #include "helpers.h"
-#include <random.h>
+#include "random.h"
 #include "../cubistutil/vec_math.h"
 
-#include "whitted_cuda.h"
+#include "cubistShading.h"
 
 //------------------------------------------------------------------------------
 //
@@ -87,6 +87,24 @@ extern "C" __global__ void __raygen__pinhole()
     const unsigned int image_index = launch_idx.y * launch_dims.x + launch_idx.x;
     float3             accum_color = payload.result;
 
+
+    // CUBIST: the ULTIMATE cubist pass XD
+    if( cubist::params.fCubistEnabled && cubist::params.fCubistPassEnabled) {
+
+        float3   new_raydir = normalize (ray_direction + accum_color * 0.2);
+    
+        traceRadiance (
+            cubist::params.handle,
+            ray_origin,
+            new_raydir,
+            0.01f,  // tmin
+            1e16f,  // tmax
+            &payload );
+        
+        accum_color = payload.result;
+
+    }
+
     if( subframe_index > 0 )
     {
         const float  a                = 1.0f / static_cast<float>( subframe_index + 1 );
@@ -140,6 +158,26 @@ extern "C" __global__ void __closesthit__radiance()
     const float3 spec_color = lerp( make_float3( F0 ), base_color, metallic );
     const float  alpha      = roughness * roughness;
 
+
+    // CUBIST: color edge by thredshold
+    if( cubist::params.fCubistEnabled && cubist::params.fEdgeEnabled) {
+        
+        float3 result = make_float3( 0.0f );
+
+        const float3 V       = -normalize( optixGetWorldRayDirection() );
+        const float3 N       = geom.N;
+        const float  N_dot_V = dot( N, V );
+
+        if ( N_dot_V < cubist::params.edge_threshold )
+            result = cubist::params.debug_color_a;    
+        else 
+            result = cubist::params.debug_color_b;
+        
+        cubist::setPayloadResult( result );
+        return;   
+    }
+
+
     //
     // compute direct lighting
     //
@@ -182,7 +220,7 @@ extern "C" __global__ void __closesthit__radiance()
 
                     const float3 diff = ( 1.0f - F ) * diff_color / M_PIf;
                     const float3 spec = F * G_vis * D;
-
+                    
                     result += light.point.color * light.point.intensity * N_dot_L * ( diff + spec );
                 }
             }
