@@ -15,4 +15,7 @@ Realtime Cubist Rendering project with several folks from the Department of Visu
 ### Building the project: Windows
 Sorry, I haven't tested in Windows...
 
-
+### Resources
+* Google Poly's sample GLTF models: https://poly.google.com
+* HDRI Haven's environment image smaples: https://hdrihaven.com
+* Optix Quick Start: https://docs.nvidia.com/gameworks/content/gameworkslibrary/optix/optix_quickstart.htm
