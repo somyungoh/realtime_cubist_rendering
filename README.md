@@ -13,9 +13,9 @@ Realtime Cubist Rendering project with several folks from the Department of Visu
 5. You'll find the executable `optixCubistRender` inside the `bin`.
 
 ### Building the project: Windows
-Sorry, I haven't tested in Windows...
+Sorry, I haven't tested on Windows...
 
 ### Resources
 * Google Poly's sample GLTF models: https://poly.google.com
-* HDRI Haven's environment image smaples: https://hdrihaven.com
+* HDRI Haven's environment image samples: https://hdrihaven.com
 * Optix Quick Start: https://docs.nvidia.com/gameworks/content/gameworkslibrary/optix/optix_quickstart.htm
