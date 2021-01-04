@@ -83,7 +83,7 @@ CUBISTAPI size_t pixelFormatSize( BufferImageFormat format );
 
 // Create a cudaTextureObject_t for the given image file.  If the filename is
 // empty or if loading the file fails, return 1x1 texture with default color.
-CUBISTAPI Texture loadTexture( const char* filename, float3 default_color, cudaTextureDesc* tex_desc = nullptr );
+CUBISTAPI Texture loadTexture( const char* fname, float3 default_color );
 
 // Floating point image buffers (see BufferImageFormat above) are assumed to be
 // linear and will be converted to sRGB when writing to a file format with 8

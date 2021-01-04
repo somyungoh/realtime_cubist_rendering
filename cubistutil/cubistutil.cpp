@@ -203,7 +203,6 @@ const char* sampleFilePath( const char* relativeSubDir, const char* relativePath
         }
     }
 
-    std::cout << ":::::DEBUG:::: CUBIST_SOURCE_DIR = " << getenv( "CUBIST_SOURCE_DIR" ) << std::endl;
 
     throw Exception( ( std::string{ "cubist::sampleDataFilePath couldn't locate " } +relativePath ).c_str() );
 }
@@ -229,26 +228,70 @@ size_t pixelFormatSize( BufferImageFormat format )
 }
 
 
-Texture loadTexture( const char* fname, float3 default_color, cudaTextureDesc* tex_desc )
+Texture loadTexture( const char* fname, float3 default_color )
 {
     const std::string filename( fname );
-    bool   isHDR = false;
-    size_t len   = filename.length();
-    if( len >= 3 )
+    const std::string ext = filename.substr( filename.length()-3 );
+
+    // load image to buffer
+    ImageBuffer img = loadImage( fname );
+
+    // load buffer to cuda texture
+    std::vector<unsigned char> buffer;
+    const int32_t    nx = static_cast<int32_t>( img.width  );
+    const int32_t    ny = static_cast<int32_t>( img.height );
+
+    buffer.resize( 4 * nx * ny );
+
+    for( int32_t i = 0; i < nx; ++i )
     {
-        isHDR = ( filename[len - 3] == 'H' || filename[len - 3] == 'h' ) &&
-                ( filename[len - 2] == 'D' || filename[len - 2] == 'd' ) &&
-		        ( filename[len - 1] == 'R' || filename[len - 1] == 'r' );
+        for( int32_t j = 0; j < ny; ++j )
+        {
+            int32_t img_index = static_cast<int32_t>( ( ny - j - 1 ) * nx + i );
+            int32_t buf_index = ( (j)*nx + i ) * 4;
+
+            buffer[buf_index + 0] = reinterpret_cast<uchar4*>( img.data )[img_index].x;
+            buffer[buf_index + 1] = reinterpret_cast<uchar4*>( img.data )[img_index].y;
+            buffer[buf_index + 2] = reinterpret_cast<uchar4*>( img.data )[img_index].z;
+            buffer[buf_index + 3] = reinterpret_cast<uchar4*>( img.data )[img_index].w;
+        }
     }
-    if( isHDR )
-    {
-        std::cerr << "HDR texture loading not yet implemented" << std::endl;
-        return {};
-    }
-    else
-    {
-        return loadPPMTexture( filename, default_color, tex_desc );
-    }
+
+    // Allocate CUDA array in device memory
+    int32_t               pitch        = nx * 4 * sizeof( unsigned char );
+    cudaChannelFormatDesc channel_desc = cudaCreateChannelDesc<uchar4>();
+
+
+    cudaArray_t cuda_array = nullptr;
+    CUDA_CHECK( cudaMallocArray( &cuda_array, &channel_desc, nx, ny ) );
+    CUDA_CHECK( cudaMemcpy2DToArray( cuda_array, 0, 0, buffer.data(), pitch, pitch, ny, cudaMemcpyHostToDevice ) );
+
+
+    // Create texture object
+    cudaResourceDesc res_desc = {};
+    res_desc.resType          = cudaResourceTypeArray;
+    res_desc.res.array.array  = cuda_array;
+
+    cudaTextureDesc default_tex_desc = {};
+    default_tex_desc.addressMode[0]      = cudaAddressModeWrap;
+    default_tex_desc.addressMode[1]      = cudaAddressModeWrap;
+    default_tex_desc.filterMode          = cudaFilterModeLinear;
+    default_tex_desc.readMode            = cudaReadModeNormalizedFloat;
+    default_tex_desc.normalizedCoords    = 1;
+    default_tex_desc.maxAnisotropy       = 1;
+    default_tex_desc.maxMipmapLevelClamp = 99;
+    default_tex_desc.minMipmapLevelClamp = 0;
+    default_tex_desc.mipmapFilterMode    = cudaFilterModePoint;
+    default_tex_desc.borderColor[0]      = 1.0f;
+    default_tex_desc.sRGB                = 1;  // ppm files are in sRGB space according to specification
+
+    // Create texture object
+    cudaTextureObject_t cuda_tex = 0;
+    CUDA_CHECK( cudaCreateTextureObject( &cuda_tex, &res_desc, &default_tex_desc, nullptr ) );
+
+    cubist::Texture texture = {cuda_array, cuda_tex};
+
+    return texture;
 }
 
 
@@ -285,7 +328,7 @@ ImageBuffer loadImage( const char* fname, int32_t force_components )
         }
         image.pixel_format = UNSIGNED_BYTE4;
     }
-    else if( ext == "png" || ext == "PNG" )
+    else if( ext == "jpg" || ext == "JPG" || ext == "png" || ext == "PNG" )
     {
         if( force_components != 4 && force_components != 0 )
             throw Exception( "cubist::loadImage(): PNG loading with force_components not implemented" );
@@ -293,16 +336,20 @@ ImageBuffer loadImage( const char* fname, int32_t force_components )
         int32_t w, h, channels;
         uint8_t* data = stbi_load( filename.c_str(), &w, &h, &channels, STBI_rgb_alpha );
         if( !data )
-            throw cubist::Exception( "cubist::loadImage( png ): stbi_load failed" );
+            throw cubist::Exception( "cubist::loadImage: stbi_load failed" );
 
         image.width  = w;
-        image.height = w;
+        image.height = h;
         image.data   = new uchar4[ w*h ];
         image.pixel_format = UNSIGNED_BYTE4;
         memcpy( image.data, data, w*h*STBI_rgb_alpha );
 
         stbi_image_free( data );
     }
+    // TODO: HDR. No reason that we can't.
+    // else if( ext == "hdr" || ext == "HDR" ext || == "hdri" || ext == "HDRI" )
+    // {
+    // }
     else if( ext == "exr" || ext == "EXR" )
     {
         if( force_components != 4 && force_components != 0 && force_components != 3 )
