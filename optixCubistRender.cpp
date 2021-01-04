@@ -188,7 +188,7 @@ void printUsageAndExit( const char* argv0 )
 {
     std::cerr <<  "Usage  : " << argv0 << " [options]\n";
     std::cerr <<  "Options: --file | -f <filename>      File for image output\n";
-    std::cerr << "          --dim=<width>x<height>      Set image dimensions; defaults to 768x768\n";
+    std::cerr <<  "         --dim=<width>x<height>      Set image dimensions; defaults to 768x768\n";
     std::cerr <<  "         --launch-samples | -s       Number of samples per pixel per launch (default 16)\n";
     std::cerr <<  "         --no-gl-interop             Disable GL interop for display\n";
     std::cerr <<  "         --model <model.gltf>        Specify model to render (required)\n";
@@ -239,8 +239,7 @@ void initLaunchParams( const cubist::Scene& scene ) {
     CUDA_CHECK( cudaMalloc( reinterpret_cast<void**>( &d_params ), sizeof( cubist::LaunchParams ) ) );
 
     params.handle = scene.traversableHandle();
-
-    // edge thredshold for dot(ray_dir * N)
+    
     params.fCubistEnabled       = false;
     params.fEdgeEnabled         = false;
     params.fCubistPassEnabled   = false;
@@ -392,8 +391,12 @@ int main( int argc, char* argv[] )
     // Parse command line options
     //
     std::string outfile;
-    std::string infile = cubist::sampleDataFilePath( "GLTF/Helmet/DamagedHelmet.gltf" );
-    
+    std::string infile = cubist::sampleDataFilePath( "gltf/Helmet/DamagedHelmet.gltf" );
+
+    // Cubist: Environment Image
+    cubist::Texture env_texture = cubist::loadTexture( cubist::sampleDataFilePath( "env/ballroom_8k.jpg" ), make_float3(1) );
+    params.env_texture = env_texture.texture;
+
     for( int i = 1; i < argc; ++i )
     {
         const std::string arg = argv[i];
@@ -456,7 +459,7 @@ int main( int argc, char* argv[] )
 
         if( outfile.empty() )
         {
-            GLFWwindow* window = cubist::initUI( "optixMeshViewer", width, height );
+            GLFWwindow* window = cubist::initUI( "optixCubistRender", width, height );
             glfwSetMouseButtonCallback  ( window, mouseButtonCallback   );
             glfwSetCursorPosCallback    ( window, cursorPosCallback     );
             glfwSetWindowSizeCallback   ( window, windowSizeCallback    );

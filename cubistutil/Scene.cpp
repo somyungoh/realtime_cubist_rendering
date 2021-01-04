@@ -1217,7 +1217,8 @@ void Scene::createProgramGroups()
         OptixProgramGroupDesc miss_prog_group_desc = {};
         miss_prog_group_desc.kind                   = OPTIX_PROGRAM_GROUP_KIND_MISS;
         miss_prog_group_desc.miss.module            = m_ptx_module;
-        miss_prog_group_desc.miss.entryFunctionName = "__miss__constant_radiance";
+        //miss_prog_group_desc.miss.entryFunctionName = "__miss__constant_radiance";
+        miss_prog_group_desc.miss.entryFunctionName = "__miss__environment_radiance";
         sizeof_log = sizeof( log );
         OPTIX_CHECK_LOG( optixProgramGroupCreate(
                     m_context,

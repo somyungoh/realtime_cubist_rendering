@@ -115,6 +115,19 @@ extern "C" __global__ void __raygen__pinhole()
     cubist::params.frame_buffer[image_index] = make_color( accum_color );
 }
 
+extern "C" __global__ void __miss__environment_radiance()
+{
+    const float3 ray_dir = optixGetWorldRayDirection();
+
+    const float   theta  = atan2f( ray_dir.x, ray_dir.z );
+    const float   phi    = M_PIf * 0.5f -  acosf( ray_dir.y );
+    const float   u      = (theta + M_PIf) * (0.5f * M_1_PIf);
+    const float   v      = 0.5f * ( 1.0f + sin(phi) );
+    const float3  result = make_float3( tex2D<float4>(cubist::params.env_texture, u, v) );
+
+    cubist::setPayloadResult( result );
+}
+
 
 extern "C" __global__ void __miss__constant_radiance()
 {
