@@ -153,13 +153,13 @@ static void keyCallback( GLFWwindow* window, int32_t key, int32_t /*scancode*/, 
     {
         switch (key) {
         case GLFW_KEY_C:
-            params.fCubistEnabled = !params.fCubistEnabled;
+            params.isCubistPassEnabled = !params.isCubistPassEnabled;
+            break;
+        case GLFW_KEY_D:
+            params.isDebugMode = !params.isDebugMode;
             break;
         case GLFW_KEY_E:
-            params.fEdgeEnabled = !params.fEdgeEnabled;
-            break;
-        case GLFW_KEY_Z:
-            params.fCubistPassEnabled = !params.fCubistPassEnabled;
+            params.isEdgeEnabled = !params.isEdgeEnabled;
             break;
         case GLFW_KEY_Q:
         case GLFW_KEY_ESCAPE:
@@ -240,9 +240,9 @@ void initLaunchParams( const cubist::Scene& scene ) {
 
     params.handle = scene.traversableHandle();
     
-    params.fCubistEnabled       = false;
-    params.fEdgeEnabled         = false;
-    params.fCubistPassEnabled   = false;
+    params.isEdgeEnabled        = false;
+    params.isCubistPassEnabled  = false;
+    params.isDebugMode          = false;
     params.edge_threshold       = 0.5;
     params.debug_color_a        = make_float3( 0.9, 0.2, 0.2 );
     params.debug_color_b        = make_float3( 0.03, 0.05, 0.5 );
@@ -375,9 +375,9 @@ void print_usage ()
     printf("::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::\n\n");
     printf("               << real-time cubist renderer >>                  \n");
     printf("  Usage:                                                        \n");
-    printf("  c) toogle entire cubist-rendering                             \n");
+    printf("  c) toogle cubist pass                                         \n");
+    printf("  d) toogle debug mode                                          \n");
     printf("  e) toogle edge detection                                      \n");
-    printf("  z) toogle cubist pass                                         \n");
     printf("                                                                \n");
     printf("::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::\n");
 

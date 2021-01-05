@@ -46,14 +46,12 @@ struct HitGroupData
     MaterialData material_data;
 };
 
-
 enum RayType
 {
     RAY_TYPE_RADIANCE  = 0,
     RAY_TYPE_OCCLUSION = 1,
     RAY_TYPE_COUNT = 2
 };
-
 
 struct LaunchParams
 {
@@ -76,10 +74,10 @@ struct LaunchParams
 
     // ::::: cubist rendering specific ::::: //
     // flags
-    bool        fCubistEnabled;
-    bool        fEdgeEnabled;
-    bool        fCubistPassEnabled;
-    
+    bool        isEdgeEnabled;
+    bool        isCubistPassEnabled;
+    bool        isDebugMode;
+
     float       edge_threshold;
     float3      debug_color_a;
     float3      debug_color_b;
