@@ -71,11 +71,15 @@ extern "C" __global__ void __raygen__pinhole()
     // Trace camera ray
     //
     cubist::PayloadRadiance payload;
-    payload.result     = make_float3( 0.0f );
-    payload.importance = 1.0f;
-    payload.depth      = 0.0f;
+    payload.result          = make_float3( 0.0f );
+    payload.importance      = 1.0f;
+    payload.depth           = 0.0f;
 
-    traceRadiance( cubist::params.handle, ray_origin, ray_direction,
+    // trace first cubist pass
+    // the first pass will determine whether to trace the second pass or not.
+    bool isSecondCubist = traceFirstCubistPass( 
+                   cubist::params.handle, 
+                   ray_origin, ray_direction,
                    0.01f,  // tmin       // TODO: smarter offset
                    1e16f,  // tmax
                    &payload );
@@ -89,7 +93,7 @@ extern "C" __global__ void __raygen__pinhole()
 
 
     // CUBIST: the ULTIMATE cubist pass XD
-    if( cubist::params.fCubistEnabled && cubist::params.fCubistPassEnabled) {
+    if( isSecondCubist && cubist::params.isCubistPassEnabled ) {
 
         float3   new_raydir = normalize (ray_direction + accum_color * 0.2);
     
@@ -124,6 +128,12 @@ extern "C" __global__ void __miss__environment_radiance()
     const float   u      = (theta + M_PIf) * (0.5f * M_1_PIf);
     const float   v      = 0.5f * ( 1.0f + sin(phi) );
     const float3  result = make_float3( tex2D<float4>(cubist::params.env_texture, u, v) );
+
+    // CUBIST: enable second pass?
+    if( cubist::params.isCubistPassEnabled )
+        optixSetPayload_3 ( 1 );
+    else 
+        optixSetPayload_3 ( 0 );
 
     cubist::setPayloadResult( result );
 }
@@ -171,25 +181,40 @@ extern "C" __global__ void __closesthit__radiance()
     const float3 spec_color = lerp( make_float3( F0 ), base_color, metallic );
     const float  alpha      = roughness * roughness;
 
+    // CUBIST: enable second pass?
+    if( cubist::params.isCubistPassEnabled )
+        optixSetPayload_3 ( 1 );
 
     // CUBIST: color edge by thredshold
-    if( cubist::params.fCubistEnabled && cubist::params.fEdgeEnabled) {
+    if( cubist::params.isEdgeEnabled ) {
         
         float3 result = make_float3( 0.0f );
 
         const float3 V       = -normalize( optixGetWorldRayDirection() );
         const float3 N       = geom.N;
         const float  N_dot_V = dot( N, V );
-
-        if ( N_dot_V < cubist::params.edge_threshold )
-            result = cubist::params.debug_color_a;    
-        else 
-            result = cubist::params.debug_color_b;
         
-        cubist::setPayloadResult( result );
-        return;   
+        // edge condition
+        if ( N_dot_V < cubist::params.edge_threshold ) 
+        {   
+            // this will set u3, which will be assigned to params.isCubistPass
+            optixSetPayload_3 ( 0 );
+            
+            // constant color on edges when debug mode
+            if ( cubist::params.isDebugMode ) 
+            {
+                result = cubist::params.debug_color_a;
+                cubist::setPayloadResult( result );
+                return;   
+            }    
+        }
+        else if ( cubist::params.isDebugMode )
+        {
+            // result = cubist::params.debug_color_b;
+            // cubist::setPayloadResult( result );
+            // return;   
+        }
     }
-
 
     //
     // compute direct lighting
