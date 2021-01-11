@@ -164,6 +164,9 @@ static void keyCallback( GLFWwindow* window, int32_t key, int32_t /*scancode*/, 
         case GLFW_KEY_M:
             params.isUseEnvMap = !params.isUseEnvMap;
             break;
+        case GLFW_KEY_U:
+            params.isUnlit = !params.isUnlit;
+            break;
         case GLFW_KEY_Q:
         case GLFW_KEY_ESCAPE:
             glfwSetWindowShouldClose( window, true );
@@ -246,6 +249,7 @@ void initLaunchParams( const cubist::Scene& scene ) {
     params.isEdgeEnabled        = false;
     params.isCubistPassEnabled  = false;
     params.isUseEnvMap          = true;
+    params.isUnlit              = false;
     params.isDebugMode          = false;
     params.edge_threshold       = 0.5;
     params.debug_color_a        = make_float3( 0.9, 0.2, 0.2 );
@@ -382,7 +386,8 @@ void print_usage ()
     printf("  c) toogle cubist pass                                         \n");
     printf("  d) toogle debug mode                                          \n");
     printf("  e) toogle edge detection                                      \n");
-    printf("  e) toogle environmnet map                                     \n");
+    printf("  u) toogle unlit textures                                      \n");
+    printf("  m) toogle environmnet map                                     \n");
     printf("                                                                \n");
     printf("::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::\n");
 

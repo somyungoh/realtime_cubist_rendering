@@ -174,6 +174,7 @@ extern "C" __global__ void __closesthit__radiance()
     roughness *= mr_tex.y;
     metallic *= mr_tex.z;
 
+
     //
     // Convert to material params
     //
@@ -215,6 +216,12 @@ extern "C" __global__ void __closesthit__radiance()
             // cubist::setPayloadResult( result );
             // return;   
         }
+    }
+
+    // CUBIST: no extra shading computation if it is unlit
+    if ( cubist::params.isUnlit ) {
+        cubist::setPayloadResult( make_float3( base_color.x, base_color.y, base_color.z ) );
+        return;
     }
 
     //
