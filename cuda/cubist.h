@@ -76,6 +76,7 @@ struct LaunchParams
     // flags
     bool        isEdgeEnabled;
     bool        isCubistPassEnabled;
+    bool        isUseEnvMap;
     bool        isDebugMode;
 
     float       edge_threshold;
