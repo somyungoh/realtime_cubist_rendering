@@ -37,7 +37,7 @@
 namespace cubist
 {
 
-const unsigned int NUM_PAYLOAD_VALUES = 4u;
+const unsigned int NUM_PAYLOAD_VALUES = 5u;
 
 
 struct HitGroupData

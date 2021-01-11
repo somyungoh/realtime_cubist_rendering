@@ -126,26 +126,29 @@ static __forceinline__ __device__ bool traceFirstCubistPass(
         cubist::PayloadRadiance*   payload
         )
 {
-    unsigned int u0=0, u1=0, u2=0, u3=0;
+    unsigned int u0=0, u1=0, u2=0, u3=0, u4=0;
     optixTrace(
             handle,
             ray_origin, ray_direction,
             tmin,
             tmax,
-            0.0f,                     // rayTime
+            0.0f,                             // rayTime
             OptixVisibilityMask( 1 ),
             OPTIX_RAY_FLAG_NONE,
             cubist::RAY_TYPE_RADIANCE,        // SBT offset
             cubist::RAY_TYPE_COUNT,           // SBT stride
             cubist::RAY_TYPE_RADIANCE,        // missSBTIndex
-            u0, u1, u2, u3 );
+            u0, u1, u2,     // Radiance
+            u3,             // Depth
+            u4              // Continue?
+        );
 
      payload->result.x = __int_as_float( u0 );
      payload->result.y = __int_as_float( u1 );
      payload->result.z = __int_as_float( u2 );
      
      // true: shoot cubist second pass
-     return u3 > 0 ? true : false;
+     return u4 > 0 ? true : false;
 }
 
 

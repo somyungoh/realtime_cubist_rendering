@@ -138,9 +138,9 @@ extern "C" __global__ void __miss__radiance() {
     
     // CUBIST: enable second pass?
     if( cubist::params.isCubistPassEnabled )
-        optixSetPayload_3 ( 1 );
+        optixSetPayload_4 ( 1 );
     else 
-        optixSetPayload_3 ( 0 );
+        optixSetPayload_4 ( 0 );
     
     cubist::setPayloadResult( result );
 }
@@ -185,7 +185,7 @@ extern "C" __global__ void __closesthit__radiance()
 
     // CUBIST: enable second pass?
     if( cubist::params.isCubistPassEnabled )
-        optixSetPayload_3 ( 1 );
+        optixSetPayload_4 ( 1 );
 
     // CUBIST: color edge by thredshold
     if( cubist::params.isEdgeEnabled ) {
@@ -200,7 +200,7 @@ extern "C" __global__ void __closesthit__radiance()
         if ( N_dot_V < cubist::params.edge_threshold ) 
         {   
             // this will set u3, which will be assigned to params.isCubistPass
-            optixSetPayload_3 ( 0 );
+            optixSetPayload_4 ( 0 );
             
             // constant color on edges when debug mode
             if ( cubist::params.isDebugMode ) 
