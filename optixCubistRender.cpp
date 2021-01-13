@@ -404,7 +404,7 @@ int main( int argc, char* argv[] )
     std::string infile = cubist::sampleDataFilePath( "gltf/Helmet/DamagedHelmet.gltf" );
 
     // Cubist: Environment Image
-    cubist::Texture env_texture = cubist::loadTexture( cubist::sampleDataFilePath( "env/ballroom_8k.jpg" ), make_float3(1) );
+    cubist::Texture env_texture = cubist::loadTexture( cubist::sampleDataFilePath( "env/outdoor_umbrellas_8k.jpg" ), make_float3(1) );
     params.env_texture = env_texture.texture;
 
     for( int i = 1; i < argc; ++i )
