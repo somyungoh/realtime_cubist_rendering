@@ -4,7 +4,7 @@ Realtime Cubist Rendering project with several folks from the Department of Visu
 
 Original Image             |  Cubist Rendering (4 pass)
 :-------------------------:|:-------------------------:
-![](https://i.postimg.cc/2yLzDTpL/no-pass.png) | ![](https://i.postimg.cc/wx1JMpgL/pass3.png)
+![](https://i.postimg.cc/2yLzDTpL/no-pass.png) | ![](https://i.postimg.cc/SxRjTLR8/Screenshot-from-2021-01-14-23-09-29.png)
 
 ### Building the project: Linux
 1. Install the latest `cuda` and `optix` from NVidia's website: https://developer.nvidia.com/optix
