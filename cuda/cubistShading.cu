@@ -95,18 +95,20 @@ extern "C" __global__ void __raygen__pinhole()
     // CUBIST: the ULTIMATE cubist pass XD
     if( isSecondCubist && cubist::params.isCubistPassEnabled ) {
 
-        float3   new_raydir = normalize (ray_direction + accum_color * 0.2);
-    
-        traceRadiance (
-            cubist::params.handle,
-            ray_origin,
-            new_raydir,
-            0.01f,  // tmin
-            1e16f,  // tmax
-            &payload );
-        
-        accum_color = payload.result;
+        for (int i = 0; i < cubist::params.number_of_pass; i++) {
 
+            float3   new_raydir = normalize (ray_direction + accum_color * 0.2);
+
+            traceFirstCubistPass (
+                cubist::params.handle,
+                ray_origin,
+                new_raydir,
+                0.01f,  // tmin
+                1e16f,  // tmax
+                &payload );
+
+            accum_color = payload.result;
+        }
     }
 
     if( subframe_index > 0 )

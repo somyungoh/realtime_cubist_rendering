@@ -80,7 +80,11 @@ struct LaunchParams
     bool        isUnlit;
     bool        isDebugMode;
 
+    // control parameters
     float       edge_threshold;
+    int         number_of_pass;
+
+    // constants
     float3      debug_color_a;
     float3      debug_color_b;
 };
