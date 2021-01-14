@@ -2,6 +2,10 @@
 
 Realtime Cubist Rendering project with several folks from the Department of Visualization, Texas A&M University. This project is made on top of NVidia Optix SDK. The latest SDK version tested is `7.2.0 (October 2020) build`.
 
+Original Image             |  Cubist Rendering (4 pass)
+:-------------------------:|:-------------------------:
+![](https://i.postimg.cc/2yLzDTpL/no-pass.png) | ![](https://i.postimg.cc/wx1JMpgL/pass3.png)
+
 ### Building the project: Linux
 1. Install the latest `cuda` and `optix` from NVidia's website: https://developer.nvidia.com/optix
 2. After the CMake configuration, (the step where you use `ccmake`), add this entire repository under the `SDK` directory. The project directory name **should be exactly `optixCubistRender`**: `NVDIA-Optix.../SDK/optixCubistRender`
