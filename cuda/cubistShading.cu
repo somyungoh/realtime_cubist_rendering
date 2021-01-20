@@ -97,7 +97,8 @@ extern "C" __global__ void __raygen__pinhole()
 
         for (int i = 0; i < cubist::params.number_of_pass; i++) {
 
-            float3   new_raydir = normalize (ray_direction + accum_color * 0.2);
+            float3 new_raydir = normalize ( 
+                ray_direction + accum_color * cubist::params.cubist_strength);
 
             traceFirstCubistPass (
                 cubist::params.handle,

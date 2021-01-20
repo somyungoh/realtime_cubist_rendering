@@ -81,6 +81,7 @@ struct LaunchParams
     bool        isDebugMode;
 
     // control parameters
+    float       cubist_strength;
     float       edge_threshold;
     int         number_of_pass;
 
