@@ -167,6 +167,26 @@ static void keyCallback( GLFWwindow* window, int32_t key, int32_t /*scancode*/, 
         case GLFW_KEY_U:
             params.isUnlit = !params.isUnlit;
             break;
+        case GLFW_KEY_RIGHT:
+            params.number_of_pass = 
+                params.number_of_pass < params.max_depth ? 
+                params.number_of_pass + 1 : params.number_of_pass;
+            break;
+        case GLFW_KEY_LEFT:
+            params.number_of_pass = 
+                params.number_of_pass > 0 ? 
+                params.number_of_pass - 1 : params.number_of_pass;
+            break;
+        case GLFW_KEY_UP:
+            params.cubist_strength = 
+                params.cubist_strength < 1 ? 
+                params.cubist_strength + 0.05 : params.cubist_strength;
+            break;
+        case GLFW_KEY_DOWN:
+            params.cubist_strength = 
+                params.cubist_strength > 0 ? 
+                params.cubist_strength - 0.05 : params.cubist_strength;
+            break;
         case GLFW_KEY_Q:
         case GLFW_KEY_ESCAPE:
             glfwSetWindowShouldClose( window, true );
@@ -241,6 +261,9 @@ void initLaunchParams( const cubist::Scene& scene ) {
 
     params.miss_color   = make_float3( 0.1f );
 
+    // this matches with the value "Scene.cpp / pipeline_link_options.maxTraceDepth"
+    params.max_depth = 5;
+
     //CUDA_CHECK( cudaStreamCreate( &stream ) );
     CUDA_CHECK( cudaMalloc( reinterpret_cast<void**>( &d_params ), sizeof( cubist::LaunchParams ) ) );
 
@@ -252,6 +275,8 @@ void initLaunchParams( const cubist::Scene& scene ) {
     params.isUnlit              = false;
     params.isDebugMode          = false;
     params.edge_threshold       = 0.5;
+    params.cubist_strength      = 0.25;
+    params.number_of_pass       = 1;
     params.debug_color_a        = make_float3( 0.9, 0.2, 0.2 );
     params.debug_color_b        = make_float3( 0.03, 0.05, 0.5 );
 }
@@ -388,6 +413,10 @@ void print_usage ()
     printf("  e) toogle edge detection                                      \n");
     printf("  u) toogle unlit textures                                      \n");
     printf("  m) toogle environmnet map                                     \n");
+    printf("  Left) subtract one cubistPass                                 \n");
+    printf("  Right) add one cubist pass                                    \n");
+    printf("  Up) increase cubist strength                                  \n");
+    printf("  Down) decrease cubist strength                                \n");
     printf("                                                                \n");
     printf("::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::\n");
 
