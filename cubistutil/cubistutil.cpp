@@ -204,7 +204,17 @@ const char* sampleFilePath( const char* relativeSubDir, const char* relativePath
     }
 
 
-    throw Exception( ( std::string{ "cubist::sampleDataFilePath couldn't locate " } +relativePath ).c_str() );
+    throw Exception( ( std::string{ "cubist::sample____FilePath couldn't locate " } +relativePath ).c_str() );
+}
+
+const char* sampleGltfFilePath( const char* relativePath )
+{
+    return sampleFilePath( "data/gltf", relativePath );
+}
+
+const char* sampleEnvFilePath( const char* relativePath )
+{
+    return sampleFilePath( "data/env", relativePath );
 }
 
 const char* sampleDataFilePath( const char* relativePath )

@@ -73,6 +73,8 @@ struct Texture
 
 // Return a path to a sample data file, or NULL if the file cannot be located.
 // The pointer returned may point to a static array.
+CUBISTAPI const char* sampleGltfFilePath( const char* relativeFilePath );
+CUBISTAPI const char* sampleEnvFilePath( const char* relativeFilePath );
 CUBISTAPI const char* sampleDataFilePath( const char* relativeFilePath );
 
 // Return a path to a sample file inside a sub directory, or NULL if the file cannot be located.

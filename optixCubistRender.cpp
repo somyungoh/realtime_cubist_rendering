@@ -71,7 +71,7 @@ bool              resize_dirty  = false;
 bool              minimized     = false;
 
 // Camera state
-bool              camera_changed = true;
+bool               camera_changed = true;
 cubist::Camera     camera;
 cubist::Trackball  trackball;
 
@@ -84,6 +84,9 @@ cubist::LaunchParams*  d_params = nullptr;
 cubist::LaunchParams   params   = {};
 int32_t                width    = 768;
 int32_t                height   = 768;
+
+// Extra params
+bool        displayStats = true;
 
 //------------------------------------------------------------------------------
 //
@@ -167,6 +170,9 @@ static void keyCallback( GLFWwindow* window, int32_t key, int32_t /*scancode*/, 
         case GLFW_KEY_U:
             params.isUnlit = !params.isUnlit;
             break;
+        case GLFW_KEY_Q:
+            displayStats = !displayStats;
+            break;
         case GLFW_KEY_RIGHT:
             params.number_of_pass = 
                 params.number_of_pass < params.max_depth ? 
@@ -187,7 +193,6 @@ static void keyCallback( GLFWwindow* window, int32_t key, int32_t /*scancode*/, 
                 params.cubist_strength > 0 ? 
                 params.cubist_strength - 0.05 : params.cubist_strength;
             break;
-        case GLFW_KEY_Q:
         case GLFW_KEY_ESCAPE:
             glfwSetWindowShouldClose( window, true );
             break;
@@ -218,6 +223,7 @@ void printUsageAndExit( const char* argv0 )
     std::cerr <<  "         --launch-samples | -s       Number of samples per pixel per launch (default 16)\n";
     std::cerr <<  "         --no-gl-interop             Disable GL interop for display\n";
     std::cerr <<  "         --model <model.gltf>        Specify model to render (required)\n";
+    std::cerr <<  "         --env <image.jpg>           Enviornment image to render\n";
     std::cerr <<  "         --help | -h                 Print this usage message\n";
     exit( 0 );
 }
@@ -413,6 +419,7 @@ void print_usage ()
     printf("  e) toogle edge detection                                      \n");
     printf("  u) toogle unlit textures                                      \n");
     printf("  m) toogle environmnet map                                     \n");
+    printf("  q) toogle display stats                                       \n");
     printf("  Left) subtract one cubistPass                                 \n");
     printf("  Right) add one cubist pass                                    \n");
     printf("  Up) increase cubist strength                                  \n");
@@ -430,11 +437,8 @@ int main( int argc, char* argv[] )
     // Parse command line options
     //
     std::string outfile;
-    std::string infile = cubist::sampleDataFilePath( "gltf/Helmet/DamagedHelmet.gltf" );
-
-    // Cubist: Environment Image
-    cubist::Texture env_texture = cubist::loadTexture( cubist::sampleDataFilePath( "env/outdoor_umbrellas_8k.jpg" ), make_float3(1) );
-    params.env_texture = env_texture.texture;
+    std::string gltf_file = cubist::sampleGltfFilePath( "Helmet/DamagedHelmet.gltf" );
+    std::string env_file  = "ninomaru_teien_8k.jpg";
 
     for( int i = 1; i < argc; ++i )
     {
@@ -451,7 +455,7 @@ int main( int argc, char* argv[] )
         {
             if( i >= argc - 1 )
                 printUsageAndExit( argv[0] );
-            infile = argv[++i];
+            gltf_file = argv[++i];
         }
         else if( arg == "--file" || arg == "-f" )
         {
@@ -470,6 +474,12 @@ int main( int argc, char* argv[] )
                 printUsageAndExit( argv[0] );
             samples_per_launch = atoi( argv[++i] );
         }
+        else if( arg == "--env" || arg == "-e" )
+        {
+            if( i >= argc - 1 )
+                printUsageAndExit( argv[0] );
+            env_file = argv[++i];
+        }
         else
         {
             std::cerr << "Unknown option '" << argv[i] << "'\n";
@@ -477,17 +487,20 @@ int main( int argc, char* argv[] )
         }
     }
 
-    if( infile.empty() )
+    if( gltf_file.empty() )
     {
         std::cerr << "--model argument required" << std::endl;
         printUsageAndExit( argv[0] );
     }
 
+    // Cubist: Environment Image
+    cubist::Texture env_texture = cubist::loadTexture( cubist::sampleEnvFilePath ( env_file.c_str() ), make_float3(1) );
+    params.env_texture = env_texture.texture;
 
     try
     {
         cubist::Scene scene;
-        cubist::loadScene( infile.c_str(), scene );
+        cubist::loadScene( gltf_file.c_str(), scene );
         scene.finalize();
 
         OPTIX_CHECK( optixInit() ); // Need to initialize function table
@@ -537,7 +550,8 @@ int main( int argc, char* argv[] )
                     t1 = std::chrono::steady_clock::now();
                     display_time += t1 - t0;
 
-                    cubist::displayStats( state_update_time, render_time, display_time );
+                    if(displayStats)
+                        cubist::displayStats( state_update_time, render_time, display_time );
 
                     glfwSwapBuffers(window);
 
