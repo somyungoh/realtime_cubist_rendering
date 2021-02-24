@@ -85,6 +85,10 @@ cubist::LaunchParams   params   = {};
 int32_t                width    = 768;
 int32_t                height   = 768;
 
+
+// TODO: image buffer to store for saving
+
+
 // Extra params
 bool        displayStats = true;
 
@@ -172,6 +176,9 @@ static void keyCallback( GLFWwindow* window, int32_t key, int32_t /*scancode*/, 
             break;
         case GLFW_KEY_Q:
             displayStats = !displayStats;
+            break;
+        case GLFW_KEY_S:
+            // TODO: Save Image
             break;
         case GLFW_KEY_RIGHT:
             params.number_of_pass = 
@@ -420,6 +427,7 @@ void print_usage ()
     printf("  u) toogle unlit textures                                      \n");
     printf("  m) toogle environmnet map                                     \n");
     printf("  q) toogle display stats                                       \n");
+    printf("  s) save current screen                                        \n");
     printf("  Left) subtract one cubistPass                                 \n");
     printf("  Right) add one cubist pass                                    \n");
     printf("  Up) increase cubist strength                                  \n");
@@ -556,6 +564,9 @@ int main( int argc, char* argv[] )
                     glfwSwapBuffers(window);
 
                     ++params.subframe_index;
+
+                    // TODO: copy output_buffer to a image buffer.
+                    //       perhaps maybe once a second? idk...
                 }
                 while( !glfwWindowShouldClose( window ) );
                 CUDA_SYNC_CHECK();
