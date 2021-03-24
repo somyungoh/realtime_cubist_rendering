@@ -446,7 +446,7 @@ int main( int argc, char* argv[] )
     //
     std::string outfile;
     std::string gltf_file = cubist::sampleGltfFilePath( "Helmet/DamagedHelmet.gltf" );
-    std::string env_file  = "ninomaru_teien_8k.jpg";
+    std::string env_file  = "leadenhall_market.jpg";
 
     for( int i = 1; i < argc; ++i )
     {
